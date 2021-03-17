@@ -1,0 +1,90 @@
+/* Add Icon to the headline of backend modules */
+.group-ixtensa_xtheme {
+	background: url(../img/icon-ixtensa.svg) 3px 0 no-repeat;
+    background-size: 15px 15px;
+}
+#tl_ixe_employeedata .multicolumnwizard thead {
+    display: none;
+}
+#tl_ixe_employeedata .multicolumnwizard .hidelabel h3,
+#tl_ixe_employeedata .multicolumnwizard .hidelabel label {
+    display: block !important;
+}
+#tl_ixe_employeedata .multicolumnwizard td {
+    display: block;
+    min-height: 65px;
+    padding: 0;
+    margin-right: 15px;
+}
+#tl_ixe_employeedata .multicolumnwizard td.operations {
+    display: block;
+    width: 100%;
+    text-align: right;
+    clear: both;
+    min-height: 30px;
+    max-height: 30px;
+}
+#tl_ixe_employeedata .multicolumnwizard td.clr,
+#tl_ixe_employeedata .multicolumnwizard td.long {
+    width: calc(100% - 30px);
+}
+#tl_ixe_employeedata .multicolumnwizard .tl_text,
+#tl_ixe_employeedata .multicolumnwizard .tl_select,
+#tl_ixe_employeedata .multicolumnwizard .tl_textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+#tl_ixe_employeedata .multicolumnwizard .tl_textarea {
+    height: 80px !important;
+}
+#tl_ixe_employeedata .multicolumnwizard td.w10 {
+    width: calc(10% - 30px);
+    float: left;
+}
+#tl_ixe_employeedata .multicolumnwizard td.w20 {
+    width: calc(20% - 30px);
+    float: left;
+}
+#tl_ixe_employeedata .multicolumnwizard td.w25 {
+    width: calc(25% - 30px);
+    float: left;
+}
+#tl_ixe_employeedata .multicolumnwizard td.w30 {
+    width: calc(30% - 15px);
+    float: left;
+}
+#tl_ixe_employeedata .multicolumnwizard td.w33 {
+    width: calc(33% - 30px);
+    float: left;
+}
+#tl_ixe_employeedata .multicolumnwizard td.w45 {
+    width: calc(45% - 15px);
+    float: left;
+}
+#tl_ixe_employeedata .multicolumnwizard td.w50 {
+    width: calc(50% - 15px);
+    float: left;
+}
+#tl_ixe_employeedata .operations, #tl_ixe_departement .operations, #tl_ixe_locationdata .operations {
+    padding-top: 24px;
+    width: calc(10% - 15px);
+    float: right;
+    clear: unset;
+}
+@media (max-width: 767px){
+    #tl_ixe_employeedata .multicolumnwizard td.w10,
+    #tl_ixe_employeedata .multicolumnwizard td.w20,
+    #tl_ixe_employeedata .multicolumnwizard td.w25,
+    #tl_ixe_employeedata .multicolumnwizard td.w30,
+    #tl_ixe_employeedata .multicolumnwizard td.w33,
+    #tl_ixe_employeedata .multicolumnwizard td.w45,
+    #tl_ixe_employeedata .multicolumnwizard td.w50{
+        width: 100%;
+    }
+    #tl_ixe_employeedata .operations, #tl_ixe_departement .operations, #tl_ixe_locationdata .operations {
+        padding-top: unset;
+        width: 100%;
+        float: unset;
+        clear: both;
+    }
+}

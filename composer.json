@@ -1,0 +1,30 @@
+{
+	"name": "ixtensa/employee-bundle",
+    "type": "contao-bundle",
+	"description": "Extension for managing contact persons and departements. Furthermore you can use a content element included in this extension to insert the contact persons into the articles of your contao website.",
+    "keywords": ["contao", "employee", "contact persons", "departements"],
+    "license": "LGPL-3.0-or-later",
+	"authors": [
+		{
+			"name": "Sebastian Zill",
+            "role": "junior developer",
+            "homepage": "https://www.ixtensa.de",
+            "mail": "technik@ixtensa.de"
+		}
+	],
+	"require": {
+		"php": ">=7.1",
+		"contao/core-bundle": "^4.4",
+        "symfony/intl": "^4.2",
+        "menatwork/contao-multicolumnwizard-bundle": "^3.4",
+        "madeyourday/contao-rocksolid-icon-picker": "^2.0"
+	},
+	"extra": {
+		"contao-manager-plugin": "ixtensa\\EmployeeBundle\\ContaoManagerPlugin"
+	},
+	"autoload": {
+		"psr-4": {
+			"ixtensa\\EmployeeBundle\\": ""
+		}
+	}
+}
