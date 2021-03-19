@@ -4,7 +4,7 @@
  * @package   EmployeeBundle
  * @author    (c) IXTENSA GmbH & Co. KG Internet und Webagentur -- Sebastian Zill
  * @license   GNU LGPL 3+
- * @copyright (c) 2020
+ * @copyright (c) 2021
  */
 
 $strName = 'tl_ixe_locationdata';
@@ -23,10 +23,9 @@ $GLOBALS['TL_LANG'][$strName]['contact_legend'] = 'Contact settings';
 $GLOBALS['TL_LANG'][$strName]['more_legend'] = 'Further information';
 $GLOBALS['TL_LANG'][$strName]['hyperlink_legend'] = 'Link settings';
 $GLOBALS['TL_LANG'][$strName]['published_legend'] = 'Publish location';
-$GLOBALS['TL_LANG'][$strName]['name'] = ['Location name', 'Enter the name of the location here'];
+$GLOBALS['TL_LANG'][$strName]['name'] = ['Location name / headline', 'Enter the name of the location here'];
+$GLOBALS['TL_LANG'][$strName]['hl'] = [' ', ' '];
 $GLOBALS['TL_LANG'][$strName]['type'] = ['Location type', 'Enter the type of the location here (z.B. Headquarters, Extension, ...)'];
-$GLOBALS['TL_LANG'][$strName]['title'] = ['Location title', 'If you wish you can add additional information about the location in here'];
-$GLOBALS['TL_LANG'][$strName]['addIcon'] = ['Add icon', 'Here you can choose if you wish to add an icon to the location'];
 $GLOBALS['TL_LANG'][$strName]['addImage'] = ['Add image', 'Here you can choose if you wish to add an image to the location'];
 $GLOBALS['TL_LANG'][$strName]['singleSRC'] = ['Select image', 'Here you can add an image (e.g. portrait) to the location from the file tree'];
 $GLOBALS['TL_LANG'][$strName]['size'] = ['Imagesize', 'You can add further settings for the image size in here'];
@@ -36,6 +35,7 @@ $GLOBALS['TL_LANG'][$strName]['alt'] = ['Alttext', 'You can enter the alttext of
 $GLOBALS['TL_LANG'][$strName]['caption'] = ['Caption', 'You can enter the caption of the image in here'];
 $GLOBALS['TL_LANG'][$strName]['imageUrl'] = ['Link', 'You can enter or choose a href link for the image in here'];
 $GLOBALS['TL_LANG'][$strName]['imageTitle'] = ['Title', 'You can add a title for the image in here'];
+$GLOBALS['TL_LANG'][$strName]['addIcon'] = ['Add icon', 'Here you can choose if you wish to add an icon to the location'];
 $GLOBALS['TL_LANG'][$strName]['companyName'] = ['Company name', 'Here you can add a company description to the location'];
 $GLOBALS['TL_LANG'][$strName]['additionalType'] = ['Additional company information', 'Should you want to add something special to the company description put it in here'];
 $GLOBALS['TL_LANG'][$strName]['streetAddress'] = ['Street', 'Here you can put the street and streetnumber of the location'];
@@ -45,10 +45,6 @@ $GLOBALS['TL_LANG'][$strName]['addressLocality'] = ['City', 'Here you can put th
 $GLOBALS['TL_LANG'][$strName]['addressRegion'] = ['Region / State', 'Here you can put the region / state of the location'];
 $GLOBALS['TL_LANG'][$strName]['addressCountry'] = ['Country', 'Here you can put the country of the location'];
 $GLOBALS['TL_LANG'][$strName]['openingHours'] = ['Opening hours', 'You can enter the opening hours of this location into the textarea'];
-$GLOBALS['TL_LANG'][$strName]['mobileCteText'] = ['Mobile CTE-text', 'Here you can add a cte text in front of the contact numbers'];
-$GLOBALS['TL_LANG'][$strName]['mobile'] = ['Mobile settings', 'Here you can add multiple mobile number for the location'];
-$GLOBALS['TL_LANG'][$strName]['mobile_content'] = ['Mobile number', 'Enter the mobile number in here'];
-$GLOBALS['TL_LANG'][$strName]['mobileLinktext'] = ['Mobile Linktext', 'Optional: You can add a text which will be shown as the link for the mobile number in here'];
 $GLOBALS['TL_LANG'][$strName]['telephoneCteText'] = ['Phone CTE-text', 'Here you can add a cte text in front of the contact numbers'];
 $GLOBALS['TL_LANG'][$strName]['telephone'] = ['Phone settings', 'Here you can add multiple phone numbers for the location'];
 $GLOBALS['TL_LANG'][$strName]['telephone_content'] = ['Phone number', 'Enter the phone numer in here'];
@@ -57,6 +53,10 @@ $GLOBALS['TL_LANG'][$strName]['faxNumberCteText'] = ['Fax CTE-text', 'Here you c
 $GLOBALS['TL_LANG'][$strName]['faxNumber'] = ['Fax settings', 'Here you can add multiple fax numbers for the location'];
 $GLOBALS['TL_LANG'][$strName]['faxNumber_content'] = ['Fax number', 'Enter the fax number in here'];
 $GLOBALS['TL_LANG'][$strName]['faxNumberLinktext'] = ['Fax Linktext', 'Optional: You can add a text which will be shown as the link for the fax number in here'];
+$GLOBALS['TL_LANG'][$strName]['mobileCteText'] = ['Mobile CTE-text', 'Here you can add a cte text in front of the contact numbers'];
+$GLOBALS['TL_LANG'][$strName]['mobile'] = ['Mobile settings', 'Here you can add multiple mobile number for the location'];
+$GLOBALS['TL_LANG'][$strName]['mobile_content'] = ['Mobile number', 'Enter the mobile number in here'];
+$GLOBALS['TL_LANG'][$strName]['mobileLinktext'] = ['Mobile Linktext', 'Optional: You can add a text which will be shown as the link for the mobile number in here'];
 $GLOBALS['TL_LANG'][$strName]['emailCteText'] = ['E-Mail CTE-text', 'Here you can add a cte text in front of the contact mail-adresses'];
 $GLOBALS['TL_LANG'][$strName]['email'] = ['E-Mail settings', 'Here you can add multiple email addresses for the location'];
 $GLOBALS['TL_LANG'][$strName]['email_content'] = ['E-Mail', 'Enter the email address in here'];

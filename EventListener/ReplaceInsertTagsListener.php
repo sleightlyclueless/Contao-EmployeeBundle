@@ -4,7 +4,7 @@
  * @package   EmployeeBundle
  * @author    (c) IXTENSA GmbH & Co. KG Internet und Webagentur -- Steffen Hamann
  * @license   GNU LGPL 3+
- * @copyright (c) 2020
+ * @copyright (c) 2021
  */
 
 namespace ixtensa\EmployeeBundle\EventListener;
@@ -46,7 +46,7 @@ class ReplaceInsertTagsListener
             $db = \Database::getInstance();
             $template = new \FrontendTemplate($tmpl);
             $res = HelperClass::getEmployeeDataByIds([$id]);
-            $arrData = HelperClass::prepareArrayDataForEmployeeTemplate($insertType, $dontShowDepartements, $dontShowLocations, $res, $id, $locationIDs, $template);
+            $arrData = HelperClass::prepareArrayDataForEmployeeTemplate($insertType, $dontShowDepartements, $dontShowLocations, $res, $id, $locationIDs, $locationgroupID, $template);
             $template->arrAnsprechData = $arrData;
 
             return $template->parse();

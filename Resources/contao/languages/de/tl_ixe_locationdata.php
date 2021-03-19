@@ -4,7 +4,7 @@
  * @package   EmployeeBundle
  * @author    (c) IXTENSA GmbH & Co. KG Internet und Webagentur -- Sebastian Zill
  * @license   GNU LGPL 3+
- * @copyright (c) 2020
+ * @copyright (c) 2021
  */
 
 $strName = 'tl_ixe_locationdata';
@@ -19,14 +19,13 @@ $GLOBALS['TL_LANG'][$strName]['main_legend'] = 'Standort Name und Typ';
 $GLOBALS['TL_LANG'][$strName]['icon_legend'] = 'Icon-Einstellungen';
 $GLOBALS['TL_LANG'][$strName]['image_legend'] = 'Bild-Einstellungen';
 $GLOBALS['TL_LANG'][$strName]['address_legend'] = 'Adress-Einstellungen';
-$GLOBALS['TL_LANG'][$strName]['contact_legend'] = 'Kontaktmöglichkeiten-Einstellungen';
+$GLOBALS['TL_LANG'][$strName]['contact_legend'] = 'Kontaktdaten-Einstellungen';
 $GLOBALS['TL_LANG'][$strName]['more_legend'] = 'Weitere Angaben';
 $GLOBALS['TL_LANG'][$strName]['hyperlink_legend'] = 'Verlinkung-Einstellungen';
 $GLOBALS['TL_LANG'][$strName]['published_legend'] = 'Standort veröffentlichen';
-$GLOBALS['TL_LANG'][$strName]['name'] = ['Standortnamen', 'Geben Sie hier den Namen / die Bezeichnung des Standortes ein'];
+$GLOBALS['TL_LANG'][$strName]['name'] = ['Standortnamen / Überschrift', 'Geben Sie hier den Namen / die Bezeichnung des Standortes ein'];
+$GLOBALS['TL_LANG'][$strName]['hl'] = [' ', ' '];
 $GLOBALS['TL_LANG'][$strName]['type'] = ['Standorttyp', 'Geben Sie hier den Typ des Standortes ein (z.B. Hauptsitz, Nebenstelle, ...)'];
-$GLOBALS['TL_LANG'][$strName]['title'] = ['Standorttitel', 'Geben Sie hier optional einen weiteren Titel für den Standort ein'];
-$GLOBALS['TL_LANG'][$strName]['addIcon'] = ['Icon hinzufügen', 'Aktivieren Sie diese Checkbox, um für den Standort ein Icon hinzuzufügen'];
 $GLOBALS['TL_LANG'][$strName]['addImage'] = ['Bild hinzufügen', 'Hier können Sie auswählen, ob Sie ein Bild zur Kontaktperson hinzufügen wollen'];
 $GLOBALS['TL_LANG'][$strName]['singleSRC'] = ['Bild auswählen', 'Hier können Sie ein Portrait oder ähnliches zur Kontaktperson aus der Dateiverwaltung hinzufügen'];
 $GLOBALS['TL_LANG'][$strName]['size'] = ['Bildgröße', 'Hier können Sie zusätzliche Einstellungen zur Bildgröße eingeben (manuelles Format in natürlichen Zahlen eingeben)'];
@@ -36,6 +35,7 @@ $GLOBALS['TL_LANG'][$strName]['alt'] = ['Bild Alttext', 'Hier können Sie den Al
 $GLOBALS['TL_LANG'][$strName]['caption'] = ['Bild Caption', 'Hier können Sie eine angezeigte Caption für das Bild eingeben'];
 $GLOBALS['TL_LANG'][$strName]['imageUrl'] = ['Link', 'Hier können Sie ein Verlinkung für das Bild wählen, bzw. eingeben'];
 $GLOBALS['TL_LANG'][$strName]['imageTitle'] = ['Bild Titel', 'Hier können Sie einen Titel für das Bild eingeben'];
+$GLOBALS['TL_LANG'][$strName]['addIcon'] = ['Icon hinzufügen', 'Aktivieren Sie diese Checkbox, um für den Standort ein Icon hinzuzufügen'];
 $GLOBALS['TL_LANG'][$strName]['companyName'] = ['Firmenname', 'Hier können Sie für den Standort eine zugehörige Firmenbezeichnung eintragen'];
 $GLOBALS['TL_LANG'][$strName]['additionalType'] = ['Zusätzliche Firmenkennung', 'Sollten Sie noch zusätzlich etwas zur konfigurierten Firma eintragen wollen, können Sie dies hier tun'];
 $GLOBALS['TL_LANG'][$strName]['streetAddress'] = ['Straße', 'Hier können Sie die Straße inkl. Hausnummer eingeben, an der sich der Standort befindet.'];
@@ -45,10 +45,6 @@ $GLOBALS['TL_LANG'][$strName]['addressLocality'] = ['Stadt', 'Hier können Sie d
 $GLOBALS['TL_LANG'][$strName]['addressRegion'] = ['Region / Bundesland', 'Hier können Sie die Region / Bundesland zum Sitz des Standortes eingeben'];
 $GLOBALS['TL_LANG'][$strName]['addressCountry'] = ['Land', 'Hier können Sie das Land zum Sitz des Standortes eingeben'];
 $GLOBALS['TL_LANG'][$strName]['openingHours'] = ['Öffnungszeiten', 'In dieses Textfeld können Sie die Öffnungszeiten des Standortes eintragen'];
-$GLOBALS['TL_LANG'][$strName]['mobileCteText'] = ['Mobile CTE-Text', 'In dieses Textfeld können Sie einen CTE Text den Kontaktnummern voranstellen'];
-$GLOBALS['TL_LANG'][$strName]['mobile'] = ['Mobil Einstellungen', 'Hier können Sie Mobilnummern des Standortes hinterlegen'];
-$GLOBALS['TL_LANG'][$strName]['mobile_content'] = ['Mobilnummer', 'Geben Sie hier eine Mobilnummer ein'];
-$GLOBALS['TL_LANG'][$strName]['mobileLinktext'] = ['Mobile Linktext', 'Hier können Sie optional einen darzustellenden Text für den Mobile - Link eingeben z.B. Mobil kontaktieren'];
 $GLOBALS['TL_LANG'][$strName]['telephoneCteText'] = ['Telefon CTE-Text', 'In dieses Textfeld können Sie einen CTE Text den Kontaktnummern voranstellen'];
 $GLOBALS['TL_LANG'][$strName]['telephone'] = ['Telefon Einstellungen', 'Hier können Sie Telefonnummern des Standortes hinterlegen'];
 $GLOBALS['TL_LANG'][$strName]['telephone_content'] = ['Telefonnummer', 'Geben Sie hier eine Telefonnummer ein'];
@@ -57,6 +53,10 @@ $GLOBALS['TL_LANG'][$strName]['faxNumberCteText'] = ['Fax CTE-Text', 'In dieses 
 $GLOBALS['TL_LANG'][$strName]['faxNumber'] = ['Fax Einstellungen', 'Hier können Sie Faxnummern des Standortes hinterlegen'];
 $GLOBALS['TL_LANG'][$strName]['faxNumber_content'] = ['Faxnummer', 'Geben Sie hier eine Faxnummer ein'];
 $GLOBALS['TL_LANG'][$strName]['faxNumberLinktext'] = ['Fax Linktext', 'Hier können Sie optional einen darzustellenden Text für den Fax - Link eingeben z.B. Fax schicken'];
+$GLOBALS['TL_LANG'][$strName]['mobileCteText'] = ['Mobile CTE-Text', 'In dieses Textfeld können Sie einen CTE Text den Kontaktnummern voranstellen'];
+$GLOBALS['TL_LANG'][$strName]['mobile'] = ['Mobil Einstellungen', 'Hier können Sie Mobilnummern des Standortes hinterlegen'];
+$GLOBALS['TL_LANG'][$strName]['mobile_content'] = ['Mobilnummer', 'Geben Sie hier eine Mobilnummer ein'];
+$GLOBALS['TL_LANG'][$strName]['mobileLinktext'] = ['Mobile Linktext', 'Hier können Sie optional einen darzustellenden Text für den Mobile - Link eingeben z.B. Mobil kontaktieren'];
 $GLOBALS['TL_LANG'][$strName]['emailCteText'] = ['E-Mail CTE-Text', 'In dieses Textfeld können Sie einen CTE Text den Kontaktadressen voranstellen'];
 $GLOBALS['TL_LANG'][$strName]['email'] = ['E-Mail Einstellungen', 'Hier können Sie Mailadressen hinterlegen'];
 $GLOBALS['TL_LANG'][$strName]['email_content'] = ['E-Mail', 'Geben Sie hier eine Mailadresse ein'];

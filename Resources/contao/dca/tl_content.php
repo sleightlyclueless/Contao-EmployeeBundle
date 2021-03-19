@@ -4,7 +4,7 @@
  * @package   EmployeeBundle
  * @author    (c) IXTENSA GmbH & Co. KG Internet und Webagentur -- Sebastian Zill
  * @license   GNU LGPL 3+
- * @copyright (c) 2020
+ * @copyright (c) 2021
  */
 
 namespace ixtensa\EmployeeBundle\dca\tl_content;
@@ -25,6 +25,7 @@ $GLOBALS['TL_DCA'][$strName]['subpalettes']['employeeType_Einzeln'] = 'employeep
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['employeeType_Individuell'] = 'employeecheckboxes';
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['employeeType_Abteilungen'] = 'departementcheckboxes';
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['employeeType_Standorte'] = 'locationcheckboxes';
+$GLOBALS['TL_DCA'][$strName]['subpalettes']['employeeType_Standortgruppe'] = 'locationgrouppicker';
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['employeeType_Alle'] = '';
 
 // Fields
@@ -54,14 +55,13 @@ $GLOBALS['TL_DCA'][$strName]['fields']['employeepicker'] = array(
     'sorting'                 => true,
     'flag'                    => 1,
     'inputType'               => 'EmployeeBundlePicker',
-    'foreignKey'              => 'tl_ixe_employeedata',
+    'foreignKey'              => 'tl_ixe_employeedata.CONCAT(firstname," ",name)',
     'eval'                    => array(
         'multiple'=>false,
         'includeBlankOption'=>true,
         'mandatory'=>true,
         'tl_class'=>'clr'
     ),
-    'options_callback'			  => array('ixtensa\EmployeeBundle\dca\tl_content\tl_content_employee', 'getEmployee'),
     'sql'                     => "blob NULL"
 );
 
@@ -73,7 +73,7 @@ $GLOBALS['TL_DCA'][$strName]['fields']['employeecheckboxes'] = array(
     'filter'                  => true,
     'flag'                    => 1,
     'inputType'               => 'EmployeeBundleCheckboxes',
-    'foreignKey'              => 'tl_ixe_employeedata',
+    'foreignKey'              => 'tl_ixe_employeedata.CONCAT(firstname," ",name)',
     'eval'                    => array(
         'feEditable'=>true,
         'feViewable'=>true,
@@ -82,7 +82,6 @@ $GLOBALS['TL_DCA'][$strName]['fields']['employeecheckboxes'] = array(
         'mandatory'=>true,
         'tl_class'=>'clr'
     ),
-    'options_callback'			  => array('ixtensa\EmployeeBundle\dca\tl_content\tl_content_employee', 'getEmployee'),
     'sql'                     => "blob NULL"
 );
 
@@ -106,6 +105,24 @@ $GLOBALS['TL_DCA'][$strName]['fields']['departementcheckboxes'] = array(
     'sql'                     => "blob NULL"
 );
 
+$GLOBALS['TL_DCA'][$strName]['fields']['locationpicker'] = array(
+    'label'                   => &$GLOBALS['TL_LANG'][$strName]['locationpicker'],
+    'exclude'                 => true,
+    'search'                  => true,
+    'filter'                  => true,
+    'sorting'                 => true,
+    'flag'                    => 1,
+    'inputType'               => 'EmployeeBundlePicker',
+    'foreignKey'              => 'tl_ixe_locationdata.CONCAT(name," ",type)',
+    'eval'                    => array(
+        'multiple'=>false,
+        'includeBlankOption'=>true,
+        'mandatory'=>true,
+        'tl_class'=>'clr'
+    ),
+    'sql'                     => "blob NULL"
+);
+
 $GLOBALS['TL_DCA'][$strName]['fields']['locationcheckboxes'] = array(
     'label'                   => &$GLOBALS['TL_LANG'][$strName]['locationcheckboxes'],
     'exclude'                 => true,
@@ -114,12 +131,30 @@ $GLOBALS['TL_DCA'][$strName]['fields']['locationcheckboxes'] = array(
     'filter'                  => true,
     'flag'                    => 1,
     'inputType'               => 'EmployeeBundleCheckboxes',
-    'foreignKey'              => 'tl_ixe_locationdata.name',
+    'foreignKey'              => 'tl_ixe_locationdata.CONCAT(name," ",type)',
     'eval'                    => array(
         'feEditable'=>true,
         'feViewable'=>true,
         'feGroup'=>'qualifications',
         'multiple'=>true,
+        'mandatory'=>true,
+        'tl_class'=>'clr'
+    ),
+    'sql'                     => "blob NULL"
+);
+
+$GLOBALS['TL_DCA'][$strName]['fields']['locationgrouppicker'] = array(
+    'label'                   => &$GLOBALS['TL_LANG'][$strName]['locationgrouppicker'],
+    'exclude'                 => true,
+    'search'                  => true,
+    'sorting'                 => true,
+    'filter'                  => true,
+    'flag'                    => 1,
+    'inputType'               => 'EmployeeBundlePicker',
+    'foreignKey'              => 'tl_ixe_locationgroup.name',
+    'eval'                    => array(
+        'multiple'=>false,
+        'includeBlankOption'=>true,
         'mandatory'=>true,
         'tl_class'=>'clr'
     ),
@@ -153,26 +188,63 @@ $GLOBALS['TL_DCA'][$strName]['fields']['dontShowLocations'] = array(
 );
 
 // ========================================LOCATION=================================================
+
 // Palettes
-$GLOBALS['TL_DCA'][$strName]['palettes']['location'] = '{type_legend},type;{location_legend},locationPicker;{expert_legend:hide},guests,cssID;{template_legend:hide},customTpl;{invisible_legend:hide},invisible,start,stop;';
+$GLOBALS['TL_DCA'][$strName]['palettes']['__selector__'][] = 'locationType';
+$GLOBALS['TL_DCA'][$strName]['palettes']['location'] = '{type_legend},type;{location_legend},locationType;{expert_legend:hide},guests,cssID;{template_legend:hide},customTpl;{invisible_legend:hide},invisible,start,stop;';
+
+// Subpalletes
+$GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Einzeln'] = 'locationpicker';
+$GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Individuell'] = 'locationcheckboxes';
+$GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Gruppe'] = 'locationgrouppicker';
 
 // Fields
-$GLOBALS['TL_DCA'][$strName]['fields']['locationPicker'] = array(
-    'label'                   => &$GLOBALS['TL_LANG'][$strName]['locationPicker'],
+$GLOBALS['TL_DCA'][$strName]['fields']['locationType'] = array(
+    'label'                   => &$GLOBALS['TL_LANG'][$strName]['locationType'],
     'exclude'                 => true,
-    'search'                  => true,
-    'sorting'                 => true,
     'filter'                  => true,
-    'flag'                    => 1,
-    'inputType'               => 'EmployeeBundlePicker',
-    'foreignKey'              => 'tl_ixe_locationdata',
+    'search'                  => false,
+    'sorting'                 => false,
+    'inputType'               => 'select',
+    'options'                 => $GLOBALS['TL_LANG'][$strName]['locationType']['options'],
+    'reference'               => &$GLOBALS['TL_LANG']['CTE'],
     'eval'                    => array(
-        'multiple'=>false,
-        'includeBlankOption'=>false,
         'mandatory'=>true,
+        'includeBlankOption'=>true,
+        'submitOnChange'=>true,
         'tl_class'=>'clr'
     ),
-    'options_callback'			  => array('ixtensa\EmployeeBundle\dca\tl_content\tl_content_location', 'getLocation'),
+    'sql'                     => "blob NULL"
+);
+
+
+// ========================================LOCATION=================================================
+
+// Palettes
+$GLOBALS['TL_DCA'][$strName]['palettes']['__selector__'][] = 'locationType';
+$GLOBALS['TL_DCA'][$strName]['palettes']['location'] = '{type_legend},type;{location_legend},locationType;{expert_legend:hide},guests,cssID;{template_legend:hide},customTpl;{invisible_legend:hide},invisible,start,stop;';
+
+// Subpalletes
+$GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Einzeln'] = 'locationpicker';
+$GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Individuell'] = 'locationcheckboxes';
+$GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Gruppe'] = 'locationgrouppicker';
+
+// Fields
+$GLOBALS['TL_DCA'][$strName]['fields']['locationType'] = array(
+    'label'                   => &$GLOBALS['TL_LANG'][$strName]['locationType'],
+    'exclude'                 => true,
+    'filter'                  => true,
+    'search'                  => false,
+    'sorting'                 => false,
+    'inputType'               => 'select',
+    'options'                 => $GLOBALS['TL_LANG'][$strName]['locationType']['options'],
+    'reference'               => &$GLOBALS['TL_LANG']['CTE'],
+    'eval'                    => array(
+        'mandatory'=>true,
+        'includeBlankOption'=>true,
+        'submitOnChange'=>true,
+        'tl_class'=>'clr'
+    ),
     'sql'                     => "blob NULL"
 );
 
@@ -202,34 +274,6 @@ class tl_content_employee extends \Backend
             $name = $value['name'];
             $fname = $value['firstname'];
             $text = '['.$id.'] ' . $name . ' ' . $fname;
-			$tmp[] = $text;
-		}
-		return $tmp;
-    }
-}
-
-class tl_content_location extends \Backend
-{
-    /**
-	 * Import the back end user object
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->import('BackendUser', 'User');
-	}
-
-    public function getLocation()
-    {
-		$tmp = array();
-		$res = $this->Database->prepare("SELECT * FROM tl_ixe_locationdata WHERE published = 1 ORDER BY `name` ASC")->execute()->fetchAllAssoc();
-
-		foreach ($res as $key => $value)
-        {
-            $id = $value['id'];
-            $name = $value['name'];
-            $type = $value['type'];
-            $text = '['.$id.'] ' . $name . ', ' . $type;
 			$tmp[] = $text;
 		}
 		return $tmp;

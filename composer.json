@@ -1,8 +1,8 @@
 {
 	"name": "ixtensa/employee-bundle",
     "type": "contao-bundle",
-	"description": "Extension for managing contact persons and departements. Furthermore you can use a content element included in this extension to insert the contact persons into the articles of your contao website.",
-    "keywords": ["contao", "employee", "contact persons", "departements"],
+	"description": "Extension for managing contact persons, their departements and locations. Furthermore you can use content elements and inserttags to insert the contact persons into the articles of your contao website.",
+    "keywords": ["contao", "employee", "contact persons", "departements", "locations"],
     "license": "LGPL-3.0-or-later",
 	"authors": [
 		{

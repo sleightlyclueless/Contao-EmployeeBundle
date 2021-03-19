@@ -1,194 +1,160 @@
 <?php $this->extend('block_searchable'); ?>
 
 <?php $this->block('content'); ?>
-<?php foreach ($this->arrData['arrLocationData'] as $currData): ?>
-    <?php if(isset($currData["checkEmptyArray"]) == true): ?>
-        <span class="empty" style="display:none;"><?= $currData["checkEmptyArray"] ?></span>
-    <?php endif; ?>
 
-    <?php if($currData["published"]): ?>
+<?php foreach ($this->arrData['arrLocationData'] as $currData): ?>
+
+    <?php if($currData['published']): ?>
         <div class="location-container location_<?= $this->id; ?>" itemscope itemtype="https://schema.org/LocalBusiness">
-            <?php if($currData["addImage"]): ?>
+            <?php if((array)$currData['arrPicture'][0]): ?>
                 <div class="location-image">
                     <?php $this->insert('image', (array)($currData['arrPicture'][0])); ?>
                 </div>
             <?php endif; ?>
 
-            <?php if($currData["addIcon"]): ?>
+            <?php if($currData['addIcon']): ?>
                 <div class="location-icon">
-                    <i class="icon" itemprop="image" data-icon="&#x<?= $currData["icon"] ?>;"> </i>
+                    <i class="icon" itemprop="image" data-icon="&#x<?= $currData['icon'] ?>;"> </i>
                 </div>
             <?php endif; ?>
 
             <div class="location-data">
-                <?php if($currData["name"]): ?>
+                <?php if($currData['name']): ?>
                     <div class="main">
-                        <?php if($currData["type"]): ?>
-                            <p class="type" itemprop="alternateName"><?= $currData["type"] ?></p>
-                        <?php else: ?>
-                            <p class="empty" style="display:none;"><?= $currData["type_empty"] ?></p>
-                        <?php endif; ?>
-                        <p class="name" itemprop="name"><?= $currData["name"] ?></p>
-                        <?php if($currData["title"]): ?>
-                            <p class="title" itemprop="additionalProperty"><?= $currData["title"] ?></p>
-                        <?php else: ?>
-                            <p class="empty" style="display:none;"><?= $currData["title_empty"] ?></p>
+                        <<?= $currData['hl'] ?> class="name" itemprop="name"><?= $currData['name'] ?></<<?= $currData['hl'] ?>>
+                        <?php if($currData['type']): ?>
+                            <p class="type" itemprop="alternateName"><?= $currData['type'] ?></p>
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
 
                 <div class="company">
                     <p class="address name">
-                        <?php if($currData["companyName"]): ?>
-                            <span itemprop="legalName"><?= $currData["companyName"] ?></span>
-                        <?php else: ?>
-                            <span class="empty" style="display:none;"><?= $currData["companyName_empty"] ?></span>
+                        <?php if($currData['companyName']): ?>
+                            <span itemprop="legalName"><?= $currData['companyName'] ?></span>
                         <?php endif; ?>
 
-                        <?php if($currData["additionalType"]): ?>
-                            <span itemprop="additionalType"><?= $currData["additionalType"] ?></span>
-                        <?php else: ?>
-                            <span class="empty" style="display:none;"><?= $currData["additionalType_empty"] ?></span>
+                        <?php if($currData['additionalType']): ?>
+                            <span itemprop="additionalType"><?= $currData['additionalType'] ?></span>
                         <?php endif; ?>
                     </p>
 
                     <p class="address street">
-                        <?php if($currData["streetAddress"]): ?>
-                            <span itemprop="streetAddress"><?= $currData["streetAddress"] ?></span>
-                        <?php else: ?>
-                            <span class="empty" style="display:none;"><?= $currData["streetAddress_empty"] ?></span>
+                        <?php if($currData['streetAddress']): ?>
+                            <span itemprop="streetAddress"><?= $currData['streetAddress'] ?></span>
                         <?php endif; ?>
 
-                        <?php if($currData["streetAdditional"]): ?>
-                            <span itemprop="streetAdditional"><?= " ".$currData["streetAdditional"] ?></span>
-                        <?php else: ?>
-                            <span class="empty" style="display:none;"><?= $currData["streetAdditional_empty"] ?></span>
+                        <?php if($currData['streetAdditional']): ?>
+                            <span itemprop="streetAdditional"><?= " ".$currData['streetAdditional'] ?></span>
                         <?php endif; ?>
                     </p>
 
                     <p class="address postal-city">
-                        <?php if($currData["postalCode"]): ?>
-                            <span itemprop="postalCode"><?= " ".$currData["postalCode"] ?></span>
-                        <?php else: ?>
-                            <span class="empty" style="display:none;"><?= $currData["postalCode_empty"] ?></span>
+                        <?php if($currData['postalCode']): ?>
+                            <span itemprop="postalCode"><?= " ".$currData['postalCode'] ?></span>
                         <?php endif; ?>
 
-                        <?php if($currData["addressLocality"]): ?>
-                            <span itemprop="addressLocality"><?= " ".$currData["addressLocality"] ?></span>
-                        <?php else: ?>
-                            <span class="empty" style="display:none;"><?= $currData["addressLocality_empty"] ?></span>
+                        <?php if($currData['addressLocality']): ?>
+                            <span itemprop="addressLocality"><?= " ".$currData['addressLocality'] ?></span>
                         <?php endif; ?>
                     </p>
 
                     <p class="address region-country">
-                        <?php if($currData["addressRegion"]): ?>
-                            <span itemprop="addressRegion"><?= " ".$currData["addressRegion"] ?></span>
-                        <?php else: ?>
-                            <span class="empty" style="display:none;"><?= $currData["addressRegion_empty"] ?></span>
+                        <?php if($currData['addressRegion']): ?>
+                            <span itemprop="addressRegion"><?= " ".$currData['addressRegion'] ?></span>
                         <?php endif; ?>
 
-                        <?php if($currData["addressCountry"]): ?>
-                            <span itemprop="addressCountry"><?= " ".$currData["addressCountry"] ?></span>
-                        <?php else: ?>
-                            <span class="empty" style="display:none;"><?= $currData["addressCountry_empty"] ?></span>
+                        <?php if($currData['addressCountry']): ?>
+                            <span itemprop="addressCountry"><?= " ".$currData['addressCountry'] ?></span>
                         <?php endif; ?>
                     </p>
                 </div>
 
                 <div class="contactdata">
-                    <?php if($currData["mobile"]): ?>
-                        <?php if($currData["mobileCteText"]): ?>
-                            <span class="mobile-cte"><?= $currData["mobileCteText"] ?></span>
+                    <?php if($currData['telephone']): ?>
+                        <?php if($currData['telephoneCteText']): ?>
+                            <span class="telephone-cte"><?= $currData['telephoneCteText'] ?></span>
                         <?php endif; ?>
 
-                        <?php foreach ($currData["mobile"] as $currMobileData): ?>
-                            <p class="data mobile">
-                                <a itemprop="mobile" href="tel:<?= preg_replace('/\s+/', '', $currMobileData["mobile_content"]); ?>">
-                                    <i class="icon icon-phone"> </i>
-                                    <?php if($currMobileData["mobileLinktext"]): ?><?= $currMobileData["mobileLinktext"] ?><?php else: ?><?= $currMobileData["mobile_content"] ?><?php endif; ?>
-                                </a>
-                            </p>
-                        <?php endforeach; ?>
-
-                    <?php else: ?>
-                        <p class="empty" style="display:none;"><?= $currData["phone_empty"] ?></p>
-                    <?php endif; ?>
-
-                    <?php if($currData["telephone"]): ?>
-                        <?php if($currData["telephoneCteText"]): ?>
-                            <span class="telephone-cte"><?= $currData["telephoneCteText"] ?></span>
-                        <?php endif; ?>
-
-                        <?php foreach ($currData["telephone"] as $currTelephoneData): ?>
+                        <?php foreach ($currData['telephone'] as $currTelephoneData): ?>
                             <p class="data telephone">
-                                <a itemprop="telephone" href="tel:<?= preg_replace('/\s+/', '', $currTelephoneData["telephone_content"]); ?>">
+                                <a itemprop="telephone" href="tel:<?= preg_replace('/\s+/', '', $currTelephoneData['telephone_content']); ?>">
                                     <i class="icon icon-phone"> </i>
-                                    <?php if($currTelephoneData["telephoneLinktext"]): ?><?= $currTelephoneData["telephoneLinktext"] ?><?php else: ?><?= $currTelephoneData["telephone_content"] ?><?php endif; ?>
+                                    <?php if($currTelephoneData['telephoneLinktext']): ?><?= $currTelephoneData['telephoneLinktext'] ?><?php else: ?><?= $currTelephoneData['telephone_content'] ?><?php endif; ?>
                                 </a>
                             </p>
                         <?php endforeach; ?>
-                    <?php else: ?>
-                        <p class="empty" style="display:none;"><?= $currData["telephone_empty"] ?></p>
                     <?php endif; ?>
 
-                    <?php if($currData["faxNumber"]): ?>
-                        <?php if($currData["faxNumberCteText"]): ?>
-                            <span class="fax-cte"><?= $currData["faxNumberCteText"] ?></span>
+                    <?php if($currData['faxNumber']): ?>
+                        <?php if($currData['faxNumberCteText']): ?>
+                            <span class="fax-cte"><?= $currData['faxNumberCteText'] ?></span>
                         <?php endif; ?>
 
-                        <?php foreach ($currData["faxNumber"] as $currFaxNumberData): ?>
+                        <?php foreach ($currData['faxNumber'] as $currFaxNumberData): ?>
                             <p class="data fax">
-                                <a itemprop="faxNumber" href="fax:<?= preg_replace('/\s+/', '', $currFaxNumberData["faxNumber_content"]); ?>">
+                                <a itemprop="faxNumber" href="fax:<?= preg_replace('/\s+/', '', $currFaxNumberData['faxNumber_content']); ?>">
                                     <i class="icon icon-print"> </i>
-                                    <?php if($currFaxNumberData["faxNumberLinktext"]): ?><?= $currFaxNumberData["faxNumberLinktext"] ?><?php else: ?><?= $currFaxNumberData["faxNumber_content"] ?><?php endif; ?>
+                                    <?php if($currFaxNumberData['faxNumberLinktext']): ?><?= $currFaxNumberData['faxNumberLinktext'] ?><?php else: ?><?= $currFaxNumberData['faxNumber_content'] ?><?php endif; ?>
                                 </a>
                             </p>
                         <?php endforeach; ?>
-                    <?php else: ?>
-                        <p class="empty" style="display:none;"><?= $currData["faxNumber_empty"] ?></p>
                     <?php endif; ?>
 
-                    <?php if($currData["email"]): ?>
-                        <?php if($currData["emailCteText"]): ?>
-                            <span class="email-cte"><?= $currData["emailCteText"] ?></span>
+                    <?php if($currData['mobile']): ?>
+                        <?php if($currData['mobileCteText']): ?>
+                            <span class="mobile-cte"><?= $currData['mobileCteText'] ?></span>
                         <?php endif; ?>
 
-                        <?php foreach ($currData["email"] as $currEmailData): ?>
-                            <p class="data email">
-                                <a itemprop="email" href="mailto:<?= $currEmailData["email_content"] ?>">
-                                    <i class="icon icon-envelope-o"> </i>
-                                    <?php if($currEmailData["emailLinktext"]): ?><?= $currEmailData["emailLinktext"] ?><?php else: ?><?= $currEmailData["email_content"] ?><?php endif; ?>
+                        <?php foreach ($currData['mobile'] as $currMobileData): ?>
+                            <p class="data mobile">
+                                <a itemprop="mobile" href="tel:<?= preg_replace('/\s+/', '', $currMobileData['mobile_content']); ?>">
+                                    <i class="icon icon-phone"> </i>
+                                    <?php if($currMobileData['mobileLinktext']): ?><?= $currMobileData['mobileLinktext'] ?><?php else: ?><?= $currMobileData['mobile_content'] ?><?php endif; ?>
                                 </a>
                             </p>
                         <?php endforeach; ?>
-                    <?php else: ?>
-                        <p class="empty" style="display:none;"><?= $currData["email_empty"] ?></p>
+                    <?php endif; ?>
+
+                    <?php if($currData['email']): ?>
+                        <?php if($currData['emailCteText']): ?>
+                            <span class="email-cte"><?= $currData['emailCteText'] ?></span>
+                        <?php endif; ?>
+
+                        <?php foreach ($currData['email'] as $currEmailData): ?>
+                            <p class="data email">
+                                <a itemprop="email" href="mailto:<?= $currEmailData['email_content'] ?>">
+                                    <i class="icon icon-envelope-o"> </i>
+                                    <?php if($currEmailData['emailLinktext']): ?><?= $currEmailData['emailLinktext'] ?><?php else: ?><?= $currEmailData['email_content'] ?><?php endif; ?>
+                                </a>
+                            </p>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
 
-                <?php if($currData["openingHours"]): ?>
-                    <div class="location-openingHours" itemprop="openingHours"><?= $currData["openingHours"] ?></div>
-                <?php else: ?>
-                    <p class="empty" style="display:none;"><?= $currData["openingHours_empty"] ?></p>
+                <?php if($currData['openingHours']): ?>
+                    <div class="location-openingHours" itemprop="openingHours"><?= $currData['openingHours'] ?></div>
                 <?php endif; ?>
 
-                <?php if($currData["additionalProperty"]): ?>
-                    <div class="location-additionalProperty" itemprop="additionalProperty"><?= $currData["additionalProperty"] ?></div>
-                <?php else: ?>
-                    <p class="empty" style="display:none;"><?= $currData["additionalProperty_empty"] ?></p>
+                <?php if($currData['additionalProperty']): ?>
+                    <div class="location-additionalProperty" itemprop="additionalProperty"><?= $currData['additionalProperty'] ?></div>
                 <?php endif; ?>
 
                 <?php if ($currData['addLink'] && $currData['url']): ?>
                     <p class="location-hyperlink">
-                        <span><?= $currData['embed_pre'] ?></span>
+                        <?php if($currData['embed_pre']): ?>
+                            <span><?= $currData['embed_pre'] ?></span>
+                        <?php endif; ?>
                         <a href="<?= $currData['url'] ?>" class="hyperlink_txt" itemprop="identifier" title="<?= $currData['titleText'] ?>"<?= $currData['target'] ?><?= $currData['rel'] ?>>
-                        <?php if($currData["linkTitle"]): ?>
+                        <?php if($currData['linkTitle']): ?>
                             <?= $currData['linkTitle'] ?>
                         <?php else: ?>
                             <?= $currData['url'] ?>
                         <?php endif; ?>
                         </a>
-                        <span><?= $currData['embed_post'] ?></span>
+                        <?php if($currData['embed_post']): ?>
+                            <span><?= $currData['embed_post'] ?></span>
+                        <?php endif; ?>
                     </p>
                 <?php endif; ?>
             </div>

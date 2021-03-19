@@ -4,7 +4,7 @@
  * @package   EmployeeBundle
  * @author    (c) IXTENSA GmbH & Co. KG Internet und Webagentur -- Sebastian Zill
  * @license   GNU LGPL 3+
- * @copyright (c) 2020
+ * @copyright (c) 2021
  */
 
 namespace ixtensa\EmployeeBundle\Helper;
@@ -47,25 +47,33 @@ class HelperClass extends \Backend
 
     // Build a query on a table for multiple IDs – WHERE ID IN(1,2,4,5) or WHERE ID IN(NULL)
     public function getMultipleIdsQuery($arrIds) {
-        $idQuery = "id IN(";
+        $idQuery = '`id` IN(';
 
         if (empty($arrIds))
         {
-            $idQuery .= "NULL";
-            $idQuery .= ")";
+            $idQuery .= 'NULL';
+            $idQuery .= ')';
         }
         else
         {
-            foreach($arrIds as $key => $currentArray)
+            if (is_string($arrIds))
             {
-                // Set current ID from Array on idQuery
-                $currentId = $arrIds[$key];
-                $idQuery .= "$currentId".",";
+                $idQuery .= $arrIds.')';
             }
-            // remove comata and set paranthese
-            if (substr($idQuery, -1) == ",") {
-                $idQuery = substr($idQuery, 0, -1);
-                $idQuery .= ")";
+            else 
+            {
+                foreach($arrIds as $key => $currentArray)
+                {
+                    // Set current ID from Array on idQuery
+                    $currentId = $arrIds[$key];
+                    $idQuery .= $currentId.',';
+                }
+                // remove comata and set paranthese
+                if (substr($idQuery, -1) == ',')
+                {
+                    $idQuery = substr($idQuery, 0, -1);
+                    $idQuery .= ')';
+                }  
             }
         }
 
@@ -75,28 +83,28 @@ class HelperClass extends \Backend
     // Query departement overview names from tl_ixe_departement for specific ids and return the fetched query results
     public function getStringFromIds($arrIds, $insertModeFlag)
     {
-        if ($insertModeFlag == "departements") {
-            $query = "SELECT departement_overview FROM tl_ixe_departement WHERE ";
+        if ($insertModeFlag == 'departements') {
+            $query = 'SELECT `departement_overview` FROM `tl_ixe_departement` WHERE ';
         }
-        if ($insertModeFlag == "locations") {
-            $query = "SELECT name FROM tl_ixe_locationdata WHERE ";
+        if ($insertModeFlag == 'locations') {
+            $query = 'SELECT `name` FROM `tl_ixe_locationdata` WHERE ';
         }
 
         $idQuery = HelperClass::getMultipleIdsQuery($arrIds);
         $query .= $idQuery;
         $res = \Database::getInstance()->prepare($query)->execute()->fetchAllAssoc();
-        $stringElement = "";
+        $stringElement = '';
 
         foreach($res as $key => $currentArray)
         {
-            if ($insertModeFlag == "departements") {
+            if ($insertModeFlag == 'departements') {
                 $elementName = $res[$key]['departement_overview'];
             }
-            if ($insertModeFlag == "locations") {
-                $locationName = $res[$key]['name'];
+            if ($insertModeFlag == 'locations') {
+                $elementName = $res[$key]['name'];
             }
 
-            $stringElement .= "$elementName".", ";
+            $stringElement .= $elementName.", ";
         }
         // remove comata and set paranthese
         if (substr($stringElement, -2) == ", ") {
@@ -108,10 +116,10 @@ class HelperClass extends \Backend
 
     // Query employeedata from tl_ixe_employeedata for specific ids and return the fetched query results
     public function getEmployeeDataByIds($arrIds) {
-        $query = "SELECT * FROM tl_ixe_employeedata WHERE ";
+        $query = 'SELECT * FROM `tl_ixe_employeedata` WHERE ';
         $idQuery = HelperClass::getMultipleIdsQuery($arrIds);
         $query .= $idQuery;
-        $query .= " AND published = 1 ORDER BY `sortingIndex` DESC, `name` ASC";
+        $query .= ' AND `published` = 1 ORDER BY `sortingIndex` DESC, `name` ASC';
         $res = \Database::getInstance()->prepare($query)->execute()->fetchAllAssoc();
 
         return $res;
@@ -119,10 +127,28 @@ class HelperClass extends \Backend
 
     // Query locationdata from tl_ixe_locationdata for specific ids and return the fetched query results
     public function getLocationDataById($arrIds) {
-        $query = "SELECT * FROM tl_ixe_locationdata WHERE ";
+        $query = 'SELECT * FROM `tl_ixe_locationdata` WHERE ';
         $idQuery = HelperClass::getMultipleIdsQuery($arrIds);
         $query .= $idQuery;
-        $query .= " AND published = 1 ORDER BY `name` ASC";
+        $query .= ' AND `published` = 1 ORDER BY `name` ASC';
+        $res = \Database::getInstance()->prepare($query)->execute()->fetchAllAssoc();
+
+        return $res;
+    }
+
+    public function getLocationGroupDataById($groupId) {
+        $query = 'SELECT * FROM `tl_ixe_locationdata` WHERE `pid`='.$groupId.' AND `published` = 1 ORDER BY `name` ASC';
+        $res = \Database::getInstance()->prepare($query)->execute()->fetchAllAssoc();
+
+        return $res;
+    }
+
+    // Query locationdata from tl_ixe_locationgroup for specific ids and return the fetched query results
+    public function getLocationGroupById($arrIds) {
+        $query = 'SELECT * FROM `tl_ixe_locationgroup` WHERE ';
+        $idQuery = HelperClass::getMultipleIdsQuery($arrIds);
+        $query .= $idQuery;
+        $query .= ' ORDER BY `name` ASC';
         $res = \Database::getInstance()->prepare($query)->execute()->fetchAllAssoc();
 
         return $res;
@@ -131,7 +157,7 @@ class HelperClass extends \Backend
     // Query all employeedata from tl_ixe_employeedata and return the fetched query results
     public function getAllEmployeeData()
     {
-        $res = \Database::getInstance()->prepare("SELECT * FROM tl_ixe_employeedata WHERE published = 1 ORDER BY `sortingIndex` DESC, `name` ASC")->execute()->fetchAllAssoc();
+        $res = \Database::getInstance()->prepare('SELECT * FROM `tl_ixe_employeedata` WHERE `published` = 1 ORDER BY `sortingIndex` DESC, `name` ASC')->execute()->fetchAllAssoc();
 
         return $res;
     }
@@ -153,14 +179,17 @@ class HelperClass extends \Backend
             $res['imageUrl'] = (empty($res['imageUrl'])) ? $meta[$GLOBALS['TL_LANGUAGE']]['link'] : $res['imageUrl'];
             $res['arrPicture'][] = $obj;
         }
+
+        // Unset Image
+        unset($res['addImage']);
         unset($res['singleSRC']);
         unset($res['size']);
         unset($res['imagemargin']);
         unset($res['overwriteMeta']);
         unset($res['alt']);
         unset($res['caption']);
-        unset($res['imageTitle']);
         unset($res['imageUrl']);
+        unset($res['imageTitle']);
 
         return $res;
     }
@@ -168,11 +197,11 @@ class HelperClass extends \Backend
     // Prepare hyperlink for template
     public function prepareLinkForTemplate($res)
     {
-        if ($res['target'] == "1") {
+        if ($res['target'] == '1') {
             $res['target'] = 'target="_blank"';
         }
         else {
-            $res['target'] = '';
+            $res['target'] = "";
         }
 
         if (!empty($res['embed'])) {
@@ -182,50 +211,72 @@ class HelperClass extends \Backend
             unset($res['embed']);
         }
         else {
-            $res['embed_pre'] = '';
-            $res['embed_post'] = '';
             unset($res['embed']);
         }
 
         if (!empty($res['rel'])) {
             $res['rel'] = 'data-lightbox="'.$res['rel'].'"';
         }
+
         return $res;
     }
 
     // prepare an array for the frontend template to display the queried data
-    public function prepareArrayDataForEmployeeTemplate($insertType, $dontShowDepartements, $dontShowLocations, $res, $departementIDs, $locationIDs, &$Template)
+    public function prepareArrayDataForEmployeeTemplate($insertType, $dontShowDepartements, $dontShowLocations, $res, $departementIDs, $locationIDs, $locationgroupID, &$Template)
     {
         foreach($res as $key => $currentArray)
         {
-            $res[$key] = HelperClass::prepareArrayDepartementTranslations($res[$key], $dontShowDepartements);
-            $res[$key] = HelperClass::prepareArrayLocationTranslations($res[$key], $dontShowLocations);
-            $res[$key] = HelperClass::prepareArrayForLanguage($res[$key]);
+            if ($currentArray['hl'] != "h1" && $currentArray['hl'] != "h2" && $currentArray['hl'] != "h3" && $currentArray['hl'] != "h4" && $currentArray['hl'] != "h5" && $currentArray['hl'] != "h6")
+            {
+                $currentArray['hl'] = "p";
+            }
+
+            $currentArray = HelperClass::prepareArrayDepartementTranslations($currentArray, $dontShowDepartements);
+            $currentArray = HelperClass::prepareArrayLocationTranslations($currentArray, $dontShowLocations);
+            $currentArray = HelperClass::prepareArrayForLanguage($currentArray);
 
             if (!empty($currentArray['singleSRC']))
             {
-                $res[$key] = HelperClass::prepareImageForTemplate($res[$key], $key);
+                $currentArray = HelperClass::prepareImageForTemplate($currentArray, $key);
             }
-
-            if ($insertType == "Abteilungen" || $insertType == "Departements") {
-                $employeeDepartementsIDs = HelperClass::getIdsByDelimiter($currentArray['departementCheckList'], '"', '"');
-                $checkIfIsInDepartement = array_intersect($departementIDs, $employeeDepartementsIDs);
+            if ($insertType == 'Abteilungen' || $insertType == 'Departements') {
+                $checkIfIsInDepartement = array_intersect($departementIDs, $currentArray['departementIDs']);
                 if (empty($checkIfIsInDepartement)) {
-                    unset($res[$key]);
+                    unset($currentArray);
                 }
             }
 
-            if ($insertType == "Standorte" || $insertType == "Locations") {
-                $employeeLocationIDs = HelperClass::getIdsByDelimiter($currentArray['locationCheckList'], '"', '"');
-                $checkIfIsInLocation = array_intersect($locationIDs, $employeeLocationIDs);
+            if ($insertType == 'Standorte' || $insertType == 'Locations') {
+                $checkIfIsInLocation = array_intersect($locationIDs, $currentArray['locationIDs']);
                 if (empty($checkIfIsInLocation)) {
-                    unset($res[$key]);
+                    unset($currentArray);
                 }
             }
-        }
 
-        if (empty($res)) {
-            $res[0]['checkEmptyArray'] = $GLOBALS['IX_EB']['MSC']['checkEmptyArrayEmployee'];
+            if ($insertType == 'Standortgruppe' || $insertType == 'Location Group') {
+                $isInGroup = false;
+                if (!empty($currentArray['locationIDs'])) {
+                    foreach($currentArray['locationIDs'] as $idKey => $currID) {
+                        $query = 'SELECT `pid` FROM `tl_ixe_locationdata` WHERE `id`='.$currID.' AND `published` = 1';
+                        $resID = \Database::getInstance()->prepare($query)->execute()->fetchAllAssoc();
+                        if ($locationgroupID == $resID[0]['pid']) {
+                            $isInGroup = true;
+                        }
+                    }
+                }
+                if ($isInGroup == false) {
+                    unset($currentArray);
+                }
+            }
+
+            if (empty($currentArray))
+            {
+                unset($res[$key]);
+            }
+            else
+            {
+                $res[$key] = $currentArray;
+            }
         }
 
         return $res;
@@ -234,17 +285,18 @@ class HelperClass extends \Backend
     // Prepare the Departements for the template array from multicolumnwizard field with languages
     public function prepareArrayDepartementTranslations($res, $dontShowDepartements)
     {
-        if ($dontShowDepartements == 1) {
-            unset($res['departementCheckList']);
-            $res['departementCheckList_err'] = $GLOBALS['IX_EB']['MSC']['no_departement_consent'];
-            return $res;
-        }
-
         $language = $GLOBALS['TL_LANGUAGE'];
         $langToUpper = strtoupper($language);
         $departementsIDs = HelperClass::getIdsByDelimiter($res['departementCheckList'], '"', '"');
+
+        if ($dontShowDepartements == 1) {
+            $res['departementIDs'] = $departementsIDs;
+            unset($res['departementCheckList']);
+            return $res;
+        }
+
         $departementsString = "";
-        $query = "SELECT departement FROM tl_ixe_departement WHERE ";
+        $query = 'SELECT `departement` FROM `tl_ixe_departement` WHERE ';
         $idQuery = HelperClass::getMultipleIdsQuery($departementsIDs);
         $query .= $idQuery;
         $departementsRes = \Database::getInstance()->prepare($query)->execute()->fetchAllAssoc();
@@ -266,16 +318,10 @@ class HelperClass extends \Backend
             $departementsString = str_replace('[nbsp], ', '',$departementsString);
             $departementsString = substr($departementsString, 0, -2);
             $res['departementCheckList'] = $departementsString;
-        }
-        else if (empty($departementsIDs))
-        {
+            $res['departementIDs'] = $departementsIDs;
+        } else {
             unset($res['departementCheckList']);
-            $res['departementCheckList_err'] = $GLOBALS['IX_EB']['MSC']['no_departement_defined'];
-        }
-        else
-        {
-            unset($res['departementCheckList']);
-            $res['departementCheckList_err'] = sprintf($GLOBALS['IX_EB']['MSC']['no_departement_for_language'], $langToUpper);
+            $res['departementIDs'] = [];
         }
 
         return $res;
@@ -284,18 +330,19 @@ class HelperClass extends \Backend
     // Prepare the Locations for the template
     public function prepareArrayLocationTranslations($res, $dontShowLocations)
     {
+        $locationIDs = HelperClass::getIdsByDelimiter($res['locationCheckList'], '"', '"');
+
         if ($dontShowLocations == 1) {
+            $res['locationIDs'] = $locationIDs;
             unset($res['locationCheckList']);
-            $res['locationCheckList_err'] = $GLOBALS['IX_EB']['MSC']['no_location_consent'];
             return $res;
         }
 
-        $locationIDs = HelperClass::getIdsByDelimiter($res['locationCheckList'], '"', '"');
         $locationsString = "";
-        $query = "SELECT name FROM tl_ixe_locationdata WHERE ";
+        $query = 'SELECT `name` FROM `tl_ixe_locationdata` WHERE ';
         $idQuery = HelperClass::getMultipleIdsQuery($locationIDs);
         $query .= $idQuery;
-        $query .= " ORDER BY `name` ASC";
+        $query .= ' ORDER BY `name` ASC';
         $locationRes = \Database::getInstance()->prepare($query)->execute()->fetchAllAssoc();
 
         foreach($locationRes as $key => $currentArray)
@@ -307,16 +354,10 @@ class HelperClass extends \Backend
         {
             $locationsString = substr($locationsString, 0, -2);
             $res['locationCheckList'] = $locationsString;
-        }
-        else if (empty($locationIDs))
-        {
+            $res['locationIDs'] = $locationIDs;
+        } else {
             unset($res['locationCheckList']);
-            $res['locationCheckList_err'] = $GLOBALS['IX_EB']['MSC']['no_location_defined'];
-        }
-        else
-        {
-            unset($res['locationCheckList']);
-            $res['locationCheckList_err'] = sprintf($GLOBALS['IX_EB']['MSC']['no_location_found']);
+            $res['locationIDs'] = [];
         }
 
         return $res;
@@ -326,126 +367,104 @@ class HelperClass extends \Backend
     public function prepareArrayForLanguage($res)
     {
         $language = $GLOBALS['TL_LANGUAGE'];
-        $langToUpper = strtoupper($language);
-        $tmpSalutation = \StringUtil::deserialize($res['salutation'], true);
-        $languageFoundSalutation = false;
 
+        $tmpSalutation = \StringUtil::deserialize($res['salutation'], true);
         foreach($tmpSalutation as $key => $currentArray)
         {
             if ($language == $currentArray['salutation_lang'])
             {
                 $res['salutation'] = $currentArray['salutation_content'];
-                $languageFoundSalutation = true;
+                $foundSal = true;
             }
         }
-        if ($languageFoundSalutation === false || empty($res['salutation']))
-        {
+        if(!$foundSal) {
             unset($res['salutation']);
-            $res['salutation_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['no_language'], '"Salutation"', '"'.$langToUpper.'"');
         }
 
         $tmpTitle = \StringUtil::deserialize($res['title'], true);
-        $languageFoundTitle = false;
         foreach($tmpTitle as $key => $currentArray)
         {
             if ($language == $currentArray['title_lang'])
             {
                 $res['title'] = $currentArray['title_content'];
-                $languageFoundTitle = true;
+                $foundTit = true;
             }
         }
-        if ($languageFoundTitle === false || empty($res['title']))
-        {
+        if(!$foundTit) {
             unset($res['title']);
-            $res['title_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['no_language'], '"Title"', '"'.$langToUpper.'"');
         }
 
         $tmpJobtitle = \StringUtil::deserialize($res['jobtitle'], true);
-        $languageFoundJobTitle = false;
         foreach($tmpJobtitle as $key => $currentArray)
         {
             if ($language == $currentArray['jobtitle_lang'])
             {
                 $res['jobtitle'] = $currentArray['jobtitle_content'];
-                $languageFoundJobTitle = true;
+                $foundJobtit = true;
             }
         }
-        if ($languageFoundJobTitle === false || empty($res['jobtitle']))
-        {
+        if(!$foundJobtit) {
             unset($res['jobtitle']);
-            $res['jobtitle_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['no_language'], '"Jobtitle"', '"'.$langToUpper.'"');
         }
 
         $tmpPhone = \StringUtil::deserialize($res['phone'], true);
-        $languageFoundPhone = false;
         foreach($tmpPhone as $key => $currentArray)
         {
             if ($language == $currentArray['phone_lang'])
             {
                 $res['phone'] = $currentArray['phone_content'];
                 $res['phoneLinktext'] = $currentArray['phoneLinktext'];
-                $languageFoundPhone = true;
+                $foundPhone = true;
             }
         }
-        if ($languageFoundPhone === false || empty($res['phone']))
-        {
+        if(!$foundPhone) {
             unset($res['phone']);
-            $res['phone_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['no_language'], '"Phone"', '"'.$langToUpper.'"');
-            $res['phoneLinktext'] = "";
+            unset($res['phoneLinktext']);
         }
 
         $tmpMobile = \StringUtil::deserialize($res['mobile'], true);
-        $languageFoundMobile = false;
         foreach($tmpMobile as $key => $currentArray)
         {
             if ($language == $currentArray['mobile_lang'])
             {
                 $res['mobile'] = $currentArray['mobile_content'];
                 $res['mobileLinktext'] = $currentArray['mobileLinktext'];
-                $languageFoundMobile = true;
+                $foundMobile = true;
             }
         }
-        if ($languageFoundMobile === false || empty($res['mobile']))
-        {
+        if(!$foundMobile) {
             unset($res['mobile']);
-            $res['mobile_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['no_language'], '"Mobile"', '"'.$langToUpper.'"');
-            $res['mobileLinktext'] = "";
+            unset($res['mobileLinktext']);
         }
 
         $tmpFax = \StringUtil::deserialize($res['fax'], true);
-        $languageFoundFax = false;
         foreach($tmpFax as $key => $currentArray)
         {
             if ($language == $currentArray['fax_lang'])
             {
                 $res['fax'] = $currentArray['fax_content'];
                 $res['faxLinktext'] = $currentArray['faxLinktext'];
-                $languageFoundFax = true;
+                $foundFax = true;
             }
         }
-        if ($languageFoundFax === false || empty($res['fax']))
-        {
+        if(!$foundFax) {
             unset($res['fax']);
-            $res['fax_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['no_language'], '"Fax"', '"'.$langToUpper.'"');
-            $res['faxLinktext'] = "";
+            unset($res['faxLinktext']);
         }
 
         $tmpMail = \StringUtil::deserialize($res['email'], true);
-        $languageFoundMail = false;
         foreach($tmpMail as $key => $currentArray)
         {
             if ($language == $currentArray['email_lang'])
             {
                 $res['email'] = $currentArray['email_content'];
                 $res['emailLinktext'] = $currentArray['emailLinktext'];
-                $languageFoundMail = true;
+                $foundMail = true;
             }
         }
-        if ($languageFoundMail === false || empty($res['email']))
-        {
+        if(!$foundMail) {
             unset($res['email']);
-            $res['email_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['no_language'], '"E-Mail"', '"'.$langToUpper.'"');
-            $res['emailLinktext'] = "";
+            unset($res['emailLinktext']);
         }
 
         return $res;
@@ -457,78 +476,32 @@ class HelperClass extends \Backend
     {
         foreach($res as $key => $currentArray)
         {
-            $res[$key] = HelperClass::prepareLocationArrayForLanguage($res[$key]);
+            if ($currentArray['hl'] != "h1" && $currentArray['hl'] != "h2" && $currentArray['hl'] != "h3" && $currentArray['hl'] != "h4" && $currentArray['hl'] != "h5" && $currentArray['hl'] != "h6")
+            {
+                $currentArray['hl'] = "p";
+            }
+
+            $currentArray = HelperClass::prepareLocationArrayForLanguage($currentArray);
 
             if (!empty($currentArray['singleSRC']))
             {
-                $res[$key] = HelperClass::prepareImageForTemplate($res[$key], $key);
+                $currentArray = HelperClass::prepareImageForTemplate($currentArray, $key);
             }
 
             if (!empty($currentArray['addLink']) && !empty($currentArray['url']))
             {
-                $res[$key] = HelperClass::prepareLinkForTemplate($res[$key]);
+                $currentArray = HelperClass::prepareLinkForTemplate($currentArray);
+            } else {
+                unset($currentArray['addLink']);
+                unset($currentArray['url']);
+                unset($currentArray['target']);
+                unset($currentArray['linkTitle']);
+                unset($currentArray['embed']);
+                unset($currentArray['titleText']);
+                unset($currentArray['rel']);
             }
 
-            if (empty($res[$key]['type'])) {
-                unset($res[$key]['type']);
-                $res[$key]['type_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"type"');
-            }
-            if (empty($res[$key]['title'])) {
-                unset($res[$key]['title']);
-                $res[$key]['title_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"title"');
-            }
-            if (empty($res[$key]['openingHours'])) {
-                unset($res[$key]['title']);
-                $res[$key]['openingHours_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"openingHours"');
-            }
-            if (empty($res[$key]['additionalProperty'])) {
-                unset($res[$key]['title']);
-                $res[$key]['additionalProperty_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"additionalProperty"');
-            }
-            if (empty($res[$key]['url'])) {
-                unset($res[$key]['target']);
-                unset($res[$key]['linkTitle']);
-                unset($res[$key]['embed']);
-                unset($res[$key]['titleText']);
-                unset($res[$key]['rel']);
-                $res[$key]['url_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"url"');
-            }
-            if (empty($res[$key]['addressCountry'])) {
-                unset($res[$key]['addressCountry']);
-                $res[$key]['addressCountry_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"addressCountry"');
-            }
-            if (empty($res[$key]['addressRegion'])) {
-                unset($res[$key]['addressRegion']);
-                $res[$key]['addressRegion_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"addressRegion"');
-            }
-            if (empty($res[$key]['addressLocality'])) {
-                unset($res[$key]['addressLocality']);
-                $res[$key]['addressLocality_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"addressLocality"');
-            }
-            if (empty($res[$key]['postalCode'])) {
-                unset($res[$key]['postalCode']);
-                $res[$key]['postalCode_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"postalCode"');
-            }
-            if (empty($res[$key]['streetAdditional'])) {
-                unset($res[$key]['streetAdditional']);
-                $res[$key]['streetAdditional_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"streetAdditional"');
-            }
-            if (empty($res[$key]['streetAddress'])) {
-                unset($res[$key]['streetAddress']);
-                $res[$key]['streetAddress_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"streetAddress"');
-            }
-            if (empty($res[$key]['companyName'])) {
-                unset($res[$key]['companyName']);
-                $res[$key]['companyName_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"companyName"');
-            }
-            if (empty($res[$key]['additionalType'])) {
-                unset($res[$key]['additionalType']);
-                $res[$key]['additionalType_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"additionalType"');
-            }
-        }
-
-        if (empty($res)) {
-            $res[0]['checkEmptyArray'] = $GLOBALS['IX_EB']['MSC']['checkEmptyArrayLocation'];
+            $res[$key] = $currentArray;
         }
 
         return $res;
@@ -537,55 +510,35 @@ class HelperClass extends \Backend
     // Extract Multicolumnwizard values
     function prepareLocationArrayForLanguage($res) {
         $tmpMobile = \StringUtil::deserialize($res['mobile'], true);
-        $foundMobile = false;
         if (!empty($tmpMobile[0]['mobile_content']))
         {
             $res['mobile'] = $tmpMobile;
-            $foundMobile = true;
-        }
-        if ($foundMobile === false || empty($res['mobile']))
-        {
+        } else {
             unset($res['mobile']);
-            $res['mobile_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"mobile"');
         }
 
         $tmpTelephone = \StringUtil::deserialize($res['telephone'], true);
-        $foundTelephone = false;
         if (!empty($tmpTelephone[0]['telephone_content']))
         {
             $res['telephone'] = $tmpTelephone;
-            $foundTelephone = true;
-        }
-        if ($foundTelephone === false || empty($res['telephone']))
-        {
+        } else {
             unset($res['telephone']);
-            $res['telephone_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"telephone"');
         }
 
         $tmpFaxNumber = \StringUtil::deserialize($res['faxNumber'], true);
-        $foundFaxNumber = false;
         if (!empty($tmpFaxNumber[0]['faxNumber_content']))
         {
             $res['faxNumber'] = $tmpFaxNumber;
-            $foundFaxNumber = true;
-        }
-        if ($foundFaxNumber === false || empty($res['faxNumber']))
-        {
+        } else {
             unset($res['faxNumber']);
-            $res['faxNumber_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"faxNumber"');
         }
 
         $tmpEmail = \StringUtil::deserialize($res['email'], true);
-        $foundEmail = false;
         if (!empty($tmpEmail[0]['email_content']))
         {
             $res['email'] = $tmpEmail;
-            $foundEmail = true;
-        }
-        if ($foundEmail === false || empty($res['email']))
-        {
+        } else {
             unset($res['email']);
-            $res['email_empty'] = sprintf($GLOBALS['IX_EB']['MSC']['empty'], '"email"');
         }
 
         return $res;

@@ -4,7 +4,7 @@
  * @package   EmployeeBundle
  * @author    (c) IXTENSA GmbH & Co. KG Internet und Webagentur -- Sebastian Zill
  * @license   GNU LGPL 3+
- * @copyright (c) 2020
+ * @copyright (c) 2021
  */
 
 namespace ixtensa\EmployeeBundle\Classes;
@@ -21,18 +21,43 @@ class Location extends \ContentElement
 		{
             $this->strTemplate = 'be_wildcard';
             $this->Template = new \BackendTemplate($this->strTemplate);
-            $locationId = HelperClass::getIdsByDelimiter($this->locationPicker, '[', ']');
-            $res = HelperClass::getLocationDataById($locationId);
-            $publishedStatus = '';
-            if ($res[0]['published'] != 1) {
-                $publishedStatus =  $GLOBALS['IX_EB']['MSC']['disabled'];
-            }
-            $this->Template->title = $res[0]['name'] . $publishedStatus;
-            if ($res[0]['type']) {
-                $this->Template->wildcard   = '### ' . $res[0]['type'] . ' ###';
-            }
-            else {
-                $this->Template->wildcard   = '### Standortelement ###';
+
+            switch ($this->locationType)
+    		{
+                case 'Einzeln':
+                case 'Single':
+                    $this->Template->title = $GLOBALS['IX_EB']['MSC']['template_locationtitle_single'];
+                    // Backward compatibility for old picker versions with arrays attached to them START
+                    if (!is_numeric($this->locationpicker)) {
+                        $locationId = HelperClass::getIdsByDelimiter($this->locationpicker, '[', ']');
+                        $res = HelperClass::getLocationDataById($locationId);
+                    } 
+                    // Backward compatibility for old picker versions with arrays attached to them END
+                    else {
+                        $res = HelperClass::getLocationDataById($this->locationpicker);
+                    }
+
+                    if ($res[0]['published'] != 1) {
+                        $this->Template->wildcard = $GLOBALS['IX_EB']['MSC']['disabled'];
+                    } else {
+                        $this->Template->wildcard = $res[0]['name'] . ' ' . $res[0]['type'];
+                    }
+                    break;
+                case 'Individuell':
+                case 'Individual':
+                    $this->Template->title = $GLOBALS['IX_EB']['MSC']['template_locationtitle_individual'];
+                    $this->Template->wildcard = $GLOBALS['IX_EB']['MSC']['template_locationwildcard_individual'];
+                    break;
+                case 'Gruppe':
+                case 'Group':
+                    $this->Template->title = $GLOBALS['IX_EB']['MSC']['template_locationtitle_group'];
+                    $res = HelperClass::getLocationGroupById($this->locationgrouppicker);
+                    $this->Template->wildcard = $res[0]['name'];
+                    break;
+                default:
+                    $this->Template->title = $GLOBALS['IX_EB']['MSC']['template_title_err'];
+                    $this->Template->wildcard = $GLOBALS['IX_EB']['MSC']['template_locationwildcard_default'];
+                    break;
             }
             return $this->Template->parse();
         }
@@ -42,10 +67,36 @@ class Location extends \ContentElement
 
     protected function compile()
     {
-        $locationId = HelperClass::getIdsByDelimiter($this->locationPicker, '[', ']');
-        $res = HelperClass::getLocationDataById($locationId);
-        $arrData = HelperClass::prepareArrayDataForLocationTemplate($res, $this->Template);
-
+        switch ($this->locationType)
+        {
+            case 'Einzeln':
+            case 'Single':
+                // Backward compatibility for old picker versions with arrays attached to them START
+                if (!is_numeric($this->locationpicker)) {
+                    $locationId = HelperClass::getIdsByDelimiter($this->locationpicker, '[', ']');
+                    $res = HelperClass::getLocationDataById($locationId);
+                } 
+                // Backward compatibility for old picker versions with arrays attached to them END
+                else {
+                    $res = HelperClass::getLocationDataById($this->locationpicker);
+                }
+                $arrData = HelperClass::prepareArrayDataForLocationTemplate($res, $this->Template);
+                break;
+            case 'Individuell':
+            case 'Individual':
+                $locationIds = HelperClass::getIdsByDelimiter($this->locationcheckboxes, '"', '"');
+                $res = HelperClass::getLocationDataById($locationIds);
+                $arrData = HelperClass::prepareArrayDataForLocationTemplate($res, $this->Template);
+                break;
+            case 'Gruppe':
+            case 'Group':
+                $res = HelperClass::getLocationGroupDataById($this->locationgrouppicker);
+                $arrData = HelperClass::prepareArrayDataForLocationTemplate($res, $this->Template);
+                break;
+            default:
+                $arrData = [];
+                break;
+        }
         $this->Template->arrLocationData = $arrData;
     }
 }

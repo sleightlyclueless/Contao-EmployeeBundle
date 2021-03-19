@@ -5,10 +5,10 @@
 
 ## What is this bundle for? ##
 ### ENGLISH ###
-Extension for contao giving it an interface for managing contact persons as well as departements they might belong to. Furthermore you can use a content element included in this extension to insert the contact persons into the articles of your contao website.
+Extension for contao giving it an interface for managing contact persons as well as departements and locations they might belong to. You can use content elements and inserttags included in this extension to insert the contact persons into the articles of your contao website.
 
 ### DEUTSCH ###
-Erweitert Contao um Backend Module zum Anlegen und Verwalten zentraler Mitarbeiter / Kontaktpersonen und separat dazu deren zugehörige Abteilungen. Diese Erweiterung bringt ebenfalls ein Inhaltselement zum Einfügen dieser Mitarbeiter mit unterschiedlichen Einfügemöglichkeiten in die Artikel von Contao.
+Erweitert Contao um Backend Module zum Anlegen und Verwalten zentraler Mitarbeiter / Kontaktpersonen und deren zugehörige Abteilungen und Standorte. Diese Erweiterung bringt ebenfalls ein Inhaltselement zum Einfügen dieser Mitarbeiter und Standorte mit unterschiedlichen Einfügemöglichkeiten in die Artikel von Contao.
 
 
 ## How do I get setup? ##
@@ -46,3 +46,4 @@ JJJJ-MM-DD
 2020-03-12 Release Version 3 – Added Departments
 2020-07-15 Release Version 4 – Serveral Bugfixes
 2020-08-17 Release Version 5 – Added Location
+2020-08-17 Release Version 6 – Optimized standard templates, Added locationgroups as parent table to locationdata, Added Location Content Elements and options, Several Backend and Frontend bugfixes and added features

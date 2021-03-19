@@ -85,7 +85,7 @@ $GLOBALS['TL_DCA'][$strName] = array(
 
 	'palettes' => array(
         '__selector__'                => array('addDepartement','addLocation','addImage', 'overwriteMeta'),
-		'default' => '{salutation_legend},salutation,title;{name_legend},firstname,name;{image_legend},addImage;{contact_legend},phone,mobile,fax,email;{meta_legend},addDepartement,addLocation,jobtitle;{more_legend},text;{sorting_legend},sortingIndex;{published_legend},published;'
+		'default' => '{salutation_legend},salutation,title;{name_legend},firstname,name,hl;{meta_legend},jobtitle,addDepartement,addLocation;{image_legend},addImage;{contact_legend},phone,fax,mobile,email;{more_legend},text;{sorting_legend},sortingIndex;{published_legend},published;'
 	),
 
 	'subpalettes' => array(
@@ -200,7 +200,7 @@ $GLOBALS['TL_DCA'][$strName] = array(
                 'maxlength'=>255,
                 'preserveTags'=>true,
                 'mandatory'=>true,
-                'tl_class'=>'clr w50'
+                'tl_class'=>'w45'
             ),
         	'sql'                     => "varchar(255) NOT NULL default ''"
         ),
@@ -216,10 +216,128 @@ $GLOBALS['TL_DCA'][$strName] = array(
                 'maxlength'=>255,
                 'preserveTags'=>true,
                 'mandatory'=>true,
-                'tl_class'=>'w50'
+                'tl_class'=>'w45 ml-0'
             ),
         	'sql'                     => "varchar(255) NOT NULL default ''"
         ),
+		'hl' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG'][$strName]['hl'],
+			'exclude'                 => true,
+			'search'                  => false,
+			'sorting'     		      => false,
+			'filter'     		      => false,
+			'inputType'               => 'select',
+			'options'                 => array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'),
+			'eval'                    => array(
+				'maxlength'=>200,
+				'tl_class'=>'w10'),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
+		'jobtitle' => array(
+            'label'                   => &$GLOBALS['TL_LANG'][$strName]['jobtitle'],
+        	'exclude'                 => true,
+            'search'                  => false,
+			'filter'                  => false,
+        	'sorting'                 => false,
+		    'inputType'               => 'multiColumnWizard',
+            'eval'      => array(
+		        'columnFields' => array(
+                    'jobtitle_lang' => array(
+						'label'                   => &$GLOBALS['TL_LANG'][$strName]['translations_lang'],
+						'exclude'                 => true,
+                        'search'                  => false,
+            			'filter'                  => false,
+                    	'sorting'                 => false,
+						'inputType'               => 'select',
+						'eval'                    => array(
+                            'style'=>'width:100%;',
+                            'chosen'=>true,
+                            'tl_class'=>'w45'
+                        ),
+                        'options_callback'        => array('ixtensa\EmployeeBundle\dca\tl_ixe_employeedata\tl_ixe_employeedata', 'getLanguageOptions'),
+                        'load_callback'			  => array(array('ixtensa\EmployeeBundle\dca\tl_ixe_employeedata\tl_ixe_employeedata', 'setLangDefault'))
+					),
+                    'jobtitle_content' => array(
+                        'label'                   => &$GLOBALS['TL_LANG'][$strName]['jobtitle_content'],
+                    	'exclude'                 => true,
+                        'search'                  => true,
+                    	'sorting'                 => false,
+            			'filter'                  => false,
+                    	'inputType'               => 'text',
+                    	'eval'                    => array(
+                            'maxlength'=>255,
+                            'preserveTags'=>true,
+                            'tl_class'=>'w45'
+                        ),
+                    	'sql'                     => "varchar(255) NOT NULL default ''"
+                    ),
+		        ),
+		    ),
+		    'sql'       => 'blob NULL',
+        ),
+        'addDepartement' => array(
+            'label'                   => &$GLOBALS['TL_LANG'][$strName]['addDepartement'],
+			'exclude'                 => true,
+            'search'      		      => false,
+			'sorting'     		      => false,
+            'filter'     		      => false,
+			'inputType'               => 'checkbox',
+			'eval'                    => array(
+				'submitOnChange'=>true,
+                'tl_class'=>'clr'
+            ),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+        'departementCheckList' => array(
+			'label'                   => &$GLOBALS['TL_LANG'][$strName]['departementCheckList'],
+			'exclude'                 => true,
+			'search'                  => true,
+            'sorting'                 => true,
+			'filter'                  => true,
+            'flag'                    => 1,
+            'inputType'               => 'EmployeeBundleCheckboxes',
+            'foreignKey'              => 'tl_ixe_departement.departement_overview',
+            'eval'                    => array(
+                'feEditable'=>true,
+                'feViewable'=>true,
+                'feGroup'=>'qualifications',
+                'multiple'=>true,
+                'tl_class'=>'clr'
+            ),
+			'sql'                     => "blob NULL"
+		),
+        'addLocation' => array(
+            'label'                   => &$GLOBALS['TL_LANG'][$strName]['addLocation'],
+			'exclude'                 => true,
+            'search'      		      => false,
+			'sorting'     		      => false,
+            'filter'     		      => false,
+			'inputType'               => 'checkbox',
+			'eval'                    => array(
+				'submitOnChange'=>true,
+                'tl_class'=>'clr'
+            ),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+        'locationCheckList' => array(
+			'label'                   => &$GLOBALS['TL_LANG'][$strName]['locationCheckList'],
+			'exclude'                 => true,
+			'search'                  => true,
+            'sorting'                 => true,
+			'filter'                  => true,
+            'flag'                    => 1,
+            'inputType'               => 'EmployeeBundleCheckboxes',
+            'foreignKey'              => 'tl_ixe_locationdata.name',
+            'eval'                    => array(
+                'feEditable'=>true,
+                'feViewable'=>true,
+                'feGroup'=>'qualifications',
+                'multiple'=>true,
+                'tl_class'=>'clr'
+            ),
+			'sql'                     => "blob NULL"
+		),
         'addImage' => array(
 			'label'                   => &$GLOBALS['TL_LANG'][$strName]['addImage'],
 			'exclude'                 => true,
@@ -403,60 +521,7 @@ $GLOBALS['TL_DCA'][$strName] = array(
                         )
                     ),
 		        ),
-		    ),
-		    'sql'       => 'blob NULL',
-        ),
-        'mobile' => array(
-            'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobile'],
-        	'exclude'                 => true,
-            'search'                  => false,
-			'filter'                  => false,
-        	'sorting'                 => false,
-		    'inputType'               => 'multiColumnWizard',
-            'eval'      => array(
-		        'columnFields' => array(
-                    'mobile_lang' => array(
-						'label'                   => &$GLOBALS['TL_LANG'][$strName]['translations_lang'],
-						'exclude'                 => true,
-                        'search'                  => false,
-            			'filter'                  => false,
-                    	'sorting'                 => false,
-						'inputType'               => 'select',
-						'eval'                    => array(
-                            'style'=>'width:100%;',
-                            'chosen'=>true,
-                            'tl_class'=>'w30'
-                        ),
-                        'options_callback'        => array('ixtensa\EmployeeBundle\dca\tl_ixe_employeedata\tl_ixe_employeedata', 'getLanguageOptions'),
-                        'load_callback'			  => array(array('ixtensa\EmployeeBundle\dca\tl_ixe_employeedata\tl_ixe_employeedata', 'setLangDefault'))
-					),
-                    'mobile_content' => array(
-                    	'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobile_content'],
-                    	'exclude'                 => true,
-                    	'search'                  => false,
-                        'sorting'                 => false,
-            			'filter'                  => false,
-                    	'inputType'               => 'text',
-                    	'eval'                    => array(
-                            'maxlength'=>64,
-                            'decodeEntities'=>true,
-                            'tl_class'=>'w30'
-                        )
-                    ),
-                    'mobileLinktext' => array(
-                        'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobileLinktext'],
-                    	'exclude'                 => true,
-                        'search'                  => true,
-                    	'sorting'                 => false,
-            			'filter'                  => false,
-                    	'inputType'               => 'text',
-                    	'eval'                    => array(
-                            'maxlength'=>255,
-                            'preserveTags'=>true,
-                            'tl_class'=>'w30'
-                        )
-                    ),
-		        ),
+				'tl_class'=>'multicolw30',
 		    ),
 		    'sql'       => 'blob NULL',
         ),
@@ -511,6 +576,62 @@ $GLOBALS['TL_DCA'][$strName] = array(
                         )
                     ),
 		        ),
+				'tl_class'=>'multicolw30',
+		    ),
+		    'sql'       => 'blob NULL',
+        ),
+		'mobile' => array(
+            'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobile'],
+        	'exclude'                 => true,
+            'search'                  => false,
+			'filter'                  => false,
+        	'sorting'                 => false,
+		    'inputType'               => 'multiColumnWizard',
+            'eval'      => array(
+		        'columnFields' => array(
+                    'mobile_lang' => array(
+						'label'                   => &$GLOBALS['TL_LANG'][$strName]['translations_lang'],
+						'exclude'                 => true,
+                        'search'                  => false,
+            			'filter'                  => false,
+                    	'sorting'                 => false,
+						'inputType'               => 'select',
+						'eval'                    => array(
+                            'style'=>'width:100%;',
+                            'chosen'=>true,
+                            'tl_class'=>'w30'
+                        ),
+                        'options_callback'        => array('ixtensa\EmployeeBundle\dca\tl_ixe_employeedata\tl_ixe_employeedata', 'getLanguageOptions'),
+                        'load_callback'			  => array(array('ixtensa\EmployeeBundle\dca\tl_ixe_employeedata\tl_ixe_employeedata', 'setLangDefault'))
+					),
+                    'mobile_content' => array(
+                    	'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobile_content'],
+                    	'exclude'                 => true,
+                    	'search'                  => false,
+                        'sorting'                 => false,
+            			'filter'                  => false,
+                    	'inputType'               => 'text',
+                    	'eval'                    => array(
+                            'maxlength'=>64,
+                            'decodeEntities'=>true,
+                            'tl_class'=>'w30'
+                        )
+                    ),
+                    'mobileLinktext' => array(
+                        'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobileLinktext'],
+                    	'exclude'                 => true,
+                        'search'                  => true,
+                    	'sorting'                 => false,
+            			'filter'                  => false,
+                    	'inputType'               => 'text',
+                    	'eval'                    => array(
+                            'maxlength'=>255,
+                            'preserveTags'=>true,
+                            'tl_class'=>'w30'
+                        )
+                    ),
+		        ),
+				'tl_class'=>'multicolw30',
 		    ),
 		    'sql'       => 'blob NULL',
         ),
@@ -566,110 +687,7 @@ $GLOBALS['TL_DCA'][$strName] = array(
                         )
                     ),
 		        ),
-		    ),
-		    'sql'       => 'blob NULL',
-        ),
-        'addDepartement' => array(
-            'label'                   => &$GLOBALS['TL_LANG'][$strName]['addDepartement'],
-			'exclude'                 => true,
-            'search'      		      => false,
-			'sorting'     		      => false,
-            'filter'     		      => false,
-			'inputType'               => 'checkbox',
-			'eval'                    => array(
-				'submitOnChange'=>true,
-                'tl_class'=>'clr'
-            ),
-			'sql'                     => "char(1) NOT NULL default ''"
-		),
-        'departementCheckList' => array(
-			'label'                   => &$GLOBALS['TL_LANG'][$strName]['departementCheckList'],
-			'exclude'                 => true,
-			'search'                  => true,
-            'sorting'                 => true,
-			'filter'                  => true,
-            'flag'                    => 1,
-            'inputType'               => 'EmployeeBundleCheckboxes',
-            'foreignKey'              => 'tl_ixe_departement.departement_overview',
-            'eval'                    => array(
-                'feEditable'=>true,
-                'feViewable'=>true,
-                'feGroup'=>'qualifications',
-                'multiple'=>true,
-                'tl_class'=>'clr'
-            ),
-			'sql'                     => "blob NULL"
-		),
-        'addLocation' => array(
-            'label'                   => &$GLOBALS['TL_LANG'][$strName]['addLocation'],
-			'exclude'                 => true,
-            'search'      		      => false,
-			'sorting'     		      => false,
-            'filter'     		      => false,
-			'inputType'               => 'checkbox',
-			'eval'                    => array(
-				'submitOnChange'=>true,
-                'tl_class'=>'clr'
-            ),
-			'sql'                     => "char(1) NOT NULL default ''"
-		),
-        'locationCheckList' => array(
-			'label'                   => &$GLOBALS['TL_LANG'][$strName]['locationCheckList'],
-			'exclude'                 => true,
-			'search'                  => true,
-            'sorting'                 => true,
-			'filter'                  => true,
-            'flag'                    => 1,
-            'inputType'               => 'EmployeeBundleCheckboxes',
-            'foreignKey'              => 'tl_ixe_locationdata.name',
-            'eval'                    => array(
-                'feEditable'=>true,
-                'feViewable'=>true,
-                'feGroup'=>'qualifications',
-                'multiple'=>true,
-                'tl_class'=>'clr'
-            ),
-			'sql'                     => "blob NULL"
-		),
-        'jobtitle' => array(
-            'label'                   => &$GLOBALS['TL_LANG'][$strName]['jobtitle'],
-        	'exclude'                 => true,
-            'search'                  => false,
-			'filter'                  => false,
-        	'sorting'                 => false,
-		    'inputType'               => 'multiColumnWizard',
-            'eval'      => array(
-		        'columnFields' => array(
-                    'jobtitle_lang' => array(
-						'label'                   => &$GLOBALS['TL_LANG'][$strName]['translations_lang'],
-						'exclude'                 => true,
-                        'search'                  => false,
-            			'filter'                  => false,
-                    	'sorting'                 => false,
-						'inputType'               => 'select',
-						'eval'                    => array(
-                            'style'=>'width:100%;',
-                            'chosen'=>true,
-                            'tl_class'=>'w45'
-                        ),
-                        'options_callback'        => array('ixtensa\EmployeeBundle\dca\tl_ixe_employeedata\tl_ixe_employeedata', 'getLanguageOptions'),
-                        'load_callback'			  => array(array('ixtensa\EmployeeBundle\dca\tl_ixe_employeedata\tl_ixe_employeedata', 'setLangDefault'))
-					),
-                    'jobtitle_content' => array(
-                        'label'                   => &$GLOBALS['TL_LANG'][$strName]['jobtitle_content'],
-                    	'exclude'                 => true,
-                        'search'                  => true,
-                    	'sorting'                 => false,
-            			'filter'                  => false,
-                    	'inputType'               => 'text',
-                    	'eval'                    => array(
-                            'maxlength'=>255,
-                            'preserveTags'=>true,
-                            'tl_class'=>'w45'
-                        ),
-                    	'sql'                     => "varchar(255) NOT NULL default ''"
-                    ),
-		        ),
+				'tl_class'=>'multicolw30',
 		    ),
 		    'sql'       => 'blob NULL',
         ),

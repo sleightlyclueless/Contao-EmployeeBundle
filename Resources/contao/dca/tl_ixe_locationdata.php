@@ -4,7 +4,7 @@
  * @package   EmployeeBundle
  * @author    (c) IXTENSA GmbH & Co. KG Internet und Webagentur -- Sebastian Zill
  * @license   GNU LGPL 3+
- * @copyright (c) 2020
+ * @copyright (c) 2021
  */
 
 namespace ixtensa\EmployeeBundle\dca\tl_ixe_locationdata;
@@ -15,11 +15,14 @@ $strName = 'tl_ixe_locationdata';
 
 $GLOBALS['TL_DCA'][$strName] = array(
 	'config' => array(
+		'ptable'             => 'tl_ixe_locationgroup',
         'dataContainer'      => 'Table',
+		'switchToEdit'       => true,
         'enableVersioning'   => true,
 		'sql' => array(
 			'keys' => array(
-				'id' => 'primary'
+				'id' => 'primary',
+				'pid' => 'index'
 			)
 		)
 	),
@@ -74,12 +77,11 @@ $GLOBALS['TL_DCA'][$strName] = array(
 	),
 
 	'palettes' => array(
-        '__selector__'                => array('addIcon', 'addImage', 'overwriteMeta', 'addLink'),
-		'default' => '{main_legend},name,type,title;{icon_legend},addIcon;{image_legend},addImage;{address_legend},companyName,additionalType,streetAddress,streetAdditional,postalCode,addressLocality,addressRegion,addressCountry;{contact_legend},openingHours,,mobileCteText,mobile,telephoneCteText,telephone,faxNumberCteText,faxNumber,emailCteText,email;{more_legend},additionalProperty;{hyperlink_legend},addLink;{published_legend},published;'
+        '__selector__'                => array('addImage', 'overwriteMeta', 'addLink'),
+		'default' => '{main_legend},name,hl,type;{image_legend},addImage;{icon_legend},addIcon,icon;{address_legend},companyName,additionalType,streetAddress,streetAdditional,postalCode,addressLocality,addressRegion,addressCountry;{contact_legend},openingHours,telephoneCteText,telephone,faxNumberCteText,faxNumber,mobileCteText,mobile,emailCteText,email;{more_legend},additionalProperty;{hyperlink_legend},addLink;{published_legend},published;'
 	),
 
 	'subpalettes' => array(
-        'addIcon'                     => 'icon',
         'addImage'                    => 'singleSRC,size,imagemargin,overwriteMeta',
 		'overwriteMeta'               => 'alt,caption,imageUrl,imageTitle',
         'addLink'                     => 'url,target,linkTitle,embed,titleText,rel',
@@ -90,6 +92,11 @@ $GLOBALS['TL_DCA'][$strName] = array(
 		'id' => array(
 			'sql'                     => "int(10) unsigned NOT NULL auto_increment"
 		),
+		'pid' => array(
+            'foreignKey'              => 'tl_ixe_locationgroup.id',
+            'relation'                => array('type'=>'belongsTo', 'load'=>'eager'),
+			'sql'                     => "int(10) unsigned NOT NULL default '0'"
+        ),
         'sorting' => array(
 			'sql'                     => "int(10) unsigned NOT NULL default '0'"
 		),
@@ -112,6 +119,20 @@ $GLOBALS['TL_DCA'][$strName] = array(
             ),
         	'sql'                     => "varchar(255) NOT NULL default ''"
         ),
+		'hl' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG'][$strName]['hl'],
+			'exclude'                 => true,
+			'search'                  => false,
+			'sorting'     		      => false,
+			'filter'     		      => false,
+			'inputType'               => 'select',
+			'options'                 => array('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'),
+			'eval'                    => array(
+				'maxlength'=>200,
+				'tl_class'=>'w10'),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
         'type' => array(
             'label'                   => &$GLOBALS['TL_LANG'][$strName]['type'],
         	'exclude'                 => true,
@@ -126,46 +147,6 @@ $GLOBALS['TL_DCA'][$strName] = array(
                 'tl_class'=>'clr w50'
             ),
         	'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        'title' => array(
-            'label'                   => &$GLOBALS['TL_LANG'][$strName]['title'],
-        	'exclude'                 => true,
-            'search'                  => false,
-        	'sorting'                 => false,
-            'filter'                  => false,
-            'flag'                    => 1,
-        	'inputType'               => 'text',
-        	'eval'                    => array(
-                'maxlength'=>255,
-                'preserveTags'=>true,
-                'tl_class'=>'clr w50'
-            ),
-        	'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        'addIcon' => array(
-			'label'                   => &$GLOBALS['TL_LANG'][$strName]['addIcon'],
-			'exclude'                 => true,
-			'search'                  => false,
-			'sorting'                 => false,
-			'filter'                  => false,
-			'inputType'               => 'checkbox',
-			'eval'                    => array(
-				'submitOnChange'=>true,
-				'tl_class'=>'clr'
-			),
-			'sql'                     => "char(1) NOT NULL default ''"
-		),
-        'icon' => array(
-            'label'                   => array('Icon', ''),
-			'exclude'			      => true,
-			'search'      		      => false,
-			'sorting'     		      => false,
-			'filter'     		      => false,
-            'inputType'               => 'rocksolid_icon_picker',
-            'eval'                    => array(
-                'iconFont' => 'files/x-theme/fonts/iconfonts/rocksolid-icons.svg',
-            ),
-            'sql'                     => "varchar(64) NOT NULL default ''"
         ),
         'addImage' => array(
 			'label'                   => &$GLOBALS['TL_LANG'][$strName]['addImage'],
@@ -299,6 +280,31 @@ $GLOBALS['TL_DCA'][$strName] = array(
 			),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
+		'addIcon' => array(
+			'label'                   => &$GLOBALS['TL_LANG'][$strName]['addIcon'],
+			'exclude'                 => true,
+			'search'                  => false,
+			'sorting'                 => false,
+			'filter'                  => false,
+			'inputType'               => 'checkbox',
+			'eval'                    => array(
+				'tl_class'=>'clr'
+			),
+			'sql'                     => "char(1) NOT NULL default ''"
+		),
+        'icon' => array(
+            'label'                   => array('Icon', ''),
+			'exclude'			      => true,
+			'search'      		      => false,
+			'sorting'     		      => false,
+			'filter'     		      => false,
+            'inputType'               => 'rocksolid_icon_picker',
+            'eval'                    => array(
+                'iconFont' => 'files/x-theme/fonts/iconfonts/rocksolid-icons.svg',
+				'tl_class'=>'be_location_iconpicker hide'
+            ),
+            'sql'                     => "varchar(64) NOT NULL default ''"
+        ),
         'companyName' => array(
             'label'                   => &$GLOBALS['TL_LANG'][$strName]['companyName'],
             'exclude'                 => true,
@@ -424,60 +430,6 @@ $GLOBALS['TL_DCA'][$strName] = array(
             ),
         	'sql'                     => "mediumtext NULL"
         ),
-        'mobileCteText' => array(
-            'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobileCteText'],
-        	'exclude'                 => true,
-            'search'                  => false,
-        	'sorting'                 => false,
-            'filter'                  => false,
-            'flag'                    => 1,
-        	'inputType'               => 'text',
-        	'eval'                    => array(
-                'maxlength'=>255,
-                'preserveTags'=>true,
-                'tl_class'=>'clr'
-            ),
-        	'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        'mobile' => array(
-            'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobile'],
-        	'exclude'                 => true,
-            'search'                  => false,
-			'filter'                  => false,
-        	'sorting'                 => false,
-		    'inputType'               => 'multiColumnWizard',
-            'eval'      => array(
-		        'columnFields' => array(
-                    'mobile_content' => array(
-                    	'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobile_content'],
-                    	'exclude'                 => true,
-                    	'search'                  => false,
-                        'sorting'                 => false,
-            			'filter'                  => false,
-                    	'inputType'               => 'text',
-                    	'eval'                    => array(
-                            'maxlength'=>64,
-                            'decodeEntities'=>true,
-                            'tl_class'=>'w45'
-                        )
-                    ),
-                    'mobileLinktext' => array(
-                        'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobileLinktext'],
-                    	'exclude'                 => true,
-                        'search'                  => true,
-                    	'sorting'                 => false,
-            			'filter'                  => false,
-                    	'inputType'               => 'text',
-                    	'eval'                    => array(
-                            'maxlength'=>255,
-                            'preserveTags'=>true,
-                            'tl_class'=>'w45'
-                        )
-                    ),
-		        ),
-		    ),
-		    'sql'       => 'blob NULL',
-        ),
         'telephoneCteText' => array(
             'label'                   => &$GLOBALS['TL_LANG'][$strName]['telephoneCteText'],
         	'exclude'                 => true,
@@ -571,6 +523,60 @@ $GLOBALS['TL_DCA'][$strName] = array(
                     ),
                     'faxNumberLinktext' => array(
                         'label'                   => &$GLOBALS['TL_LANG'][$strName]['faxNumberLinktext'],
+                    	'exclude'                 => true,
+                        'search'                  => true,
+                    	'sorting'                 => false,
+            			'filter'                  => false,
+                    	'inputType'               => 'text',
+                    	'eval'                    => array(
+                            'maxlength'=>255,
+                            'preserveTags'=>true,
+                            'tl_class'=>'w45'
+                        )
+                    ),
+		        ),
+		    ),
+		    'sql'       => 'blob NULL',
+        ),
+		'mobileCteText' => array(
+            'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobileCteText'],
+        	'exclude'                 => true,
+            'search'                  => false,
+        	'sorting'                 => false,
+            'filter'                  => false,
+            'flag'                    => 1,
+        	'inputType'               => 'text',
+        	'eval'                    => array(
+                'maxlength'=>255,
+                'preserveTags'=>true,
+                'tl_class'=>'clr'
+            ),
+        	'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'mobile' => array(
+            'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobile'],
+        	'exclude'                 => true,
+            'search'                  => false,
+			'filter'                  => false,
+        	'sorting'                 => false,
+		    'inputType'               => 'multiColumnWizard',
+            'eval'      => array(
+		        'columnFields' => array(
+                    'mobile_content' => array(
+                    	'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobile_content'],
+                    	'exclude'                 => true,
+                    	'search'                  => false,
+                        'sorting'                 => false,
+            			'filter'                  => false,
+                    	'inputType'               => 'text',
+                    	'eval'                    => array(
+                            'maxlength'=>64,
+                            'decodeEntities'=>true,
+                            'tl_class'=>'w45'
+                        )
+                    ),
+                    'mobileLinktext' => array(
+                        'label'                   => &$GLOBALS['TL_LANG'][$strName]['mobileLinktext'],
                     	'exclude'                 => true,
                         'search'                  => true,
                     	'sorting'                 => false,
