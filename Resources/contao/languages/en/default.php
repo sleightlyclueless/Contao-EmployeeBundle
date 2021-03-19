@@ -36,7 +36,7 @@ $GLOBALS['TL_LANG']['CTE']['location'] = ['Loctation'];
 $GLOBALS['TL_LANG']['tl_content']['location_legend'] = 'Location Choice';
 $GLOBALS['TL_LANG']['tl_content']['locationType'] = ['Location insert mode', 'Choose an insertmode for the locations. Single: Select a single location to output on frontend. Individual: Select a multiple locations from checkboxes to output. Group: Select a locationgroup of which the locations will be output.'];
 $GLOBALS['TL_LANG']['tl_content']['locationType']['options'] = ['Single', 'Individual', 'Group'];
-$GLOBALS['TL_LANG']['tl_content']['locationpicker'] = ['Location selection', 'Choose the location you wish to show in the frontend as a content element.'];
+$GLOBALS['TL_LANG']['tl_content']['locationPicker'] = ['Location selection', 'Choose the location you wish to show in the frontend as a content element.'];
 $GLOBALS['TL_LANG']['tl_content']['locationgrouppicker'] = ['Locationgroup selection', 'Choose the locationgroup of which you wish to show the locations in the frontend as a content element.'];
 
 $GLOBALS['IX_EB']['MSC']['template_locationtitle_single'] = 'Single Location';

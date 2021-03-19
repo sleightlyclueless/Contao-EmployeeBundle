@@ -105,8 +105,8 @@ $GLOBALS['TL_DCA'][$strName]['fields']['departementcheckboxes'] = array(
     'sql'                     => "blob NULL"
 );
 
-$GLOBALS['TL_DCA'][$strName]['fields']['locationpicker'] = array(
-    'label'                   => &$GLOBALS['TL_LANG'][$strName]['locationpicker'],
+$GLOBALS['TL_DCA'][$strName]['fields']['locationPicker'] = array(
+    'label'                   => &$GLOBALS['TL_LANG'][$strName]['locationPicker'],
     'exclude'                 => true,
     'search'                  => true,
     'filter'                  => true,
@@ -194,7 +194,7 @@ $GLOBALS['TL_DCA'][$strName]['palettes']['__selector__'][] = 'locationType';
 $GLOBALS['TL_DCA'][$strName]['palettes']['location'] = '{type_legend},type;{location_legend},locationType;{expert_legend:hide},guests,cssID;{template_legend:hide},customTpl;{invisible_legend:hide},invisible,start,stop;';
 
 // Subpalletes
-$GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Einzeln'] = 'locationpicker';
+$GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Einzeln'] = 'locationPicker';
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Individuell'] = 'locationcheckboxes';
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Gruppe'] = 'locationgrouppicker';
 
@@ -225,7 +225,7 @@ $GLOBALS['TL_DCA'][$strName]['palettes']['__selector__'][] = 'locationType';
 $GLOBALS['TL_DCA'][$strName]['palettes']['location'] = '{type_legend},type;{location_legend},locationType;{expert_legend:hide},guests,cssID;{template_legend:hide},customTpl;{invisible_legend:hide},invisible,start,stop;';
 
 // Subpalletes
-$GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Einzeln'] = 'locationpicker';
+$GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Einzeln'] = 'locationPicker';
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Individuell'] = 'locationcheckboxes';
 $GLOBALS['TL_DCA'][$strName]['subpalettes']['locationType_Gruppe'] = 'locationgrouppicker';
 

@@ -36,7 +36,7 @@ $GLOBALS['TL_LANG']['CTE']['location'] = ['Standort'];
 $GLOBALS['TL_LANG']['tl_content']['location_legend'] = 'Standorte Auswahl';
 $GLOBALS['TL_LANG']['tl_content']['locationType'] = ['Standorte Einfügemodus', 'Wählen Sie aus der gegebenen Liste den Einfügemodus für die Standorte. Einzeln: Einen einzigen Standort zum einfügen auswählen. Individuell: Wählen Sie per Checkboxes die Standorte, die eingefügt werden sollen aus. Gruppe: Wählen Sie die Standortgruppe aus, deren Standorte eingefügt werden sollen.'];
 $GLOBALS['TL_LANG']['tl_content']['locationType']['options'] = ['Einzeln', 'Individuell', 'Gruppe'];
-$GLOBALS['TL_LANG']['tl_content']['locationpicker'] = ['Standort Wählen', 'Wählen Sie aus dem Select Feld den Standort aus, den Sie als Inhaltselement ausgeben möchten.'];
+$GLOBALS['TL_LANG']['tl_content']['locationPicker'] = ['Standort Wählen', 'Wählen Sie aus dem Select Feld den Standort aus, den Sie als Inhaltselement ausgeben möchten.'];
 $GLOBALS['TL_LANG']['tl_content']['locationgrouppicker'] = ['Standortgruppe Wählen', 'Wählen Sie aus dem Select Feld die Standortgruppe aus, den Sie als Inhaltselement ausgeben möchten.'];
 
 $GLOBALS['IX_EB']['MSC']['template_locationtitle_single'] = 'Einzelner Standort';

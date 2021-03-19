@@ -28,13 +28,13 @@ class Location extends \ContentElement
                 case 'Single':
                     $this->Template->title = $GLOBALS['IX_EB']['MSC']['template_locationtitle_single'];
                     // Backward compatibility for old picker versions with arrays attached to them START
-                    if (!is_numeric($this->locationpicker)) {
-                        $locationId = HelperClass::getIdsByDelimiter($this->locationpicker, '[', ']');
+                    if (!is_numeric($this->locationPicker)) {
+                        $locationId = HelperClass::getIdsByDelimiter($this->locationPicker, '[', ']');
                         $res = HelperClass::getLocationDataById($locationId);
                     } 
                     // Backward compatibility for old picker versions with arrays attached to them END
                     else {
-                        $res = HelperClass::getLocationDataById($this->locationpicker);
+                        $res = HelperClass::getLocationDataById($this->locationPicker);
                     }
 
                     if ($res[0]['published'] != 1) {
@@ -72,13 +72,13 @@ class Location extends \ContentElement
             case 'Einzeln':
             case 'Single':
                 // Backward compatibility for old picker versions with arrays attached to them START
-                if (!is_numeric($this->locationpicker)) {
-                    $locationId = HelperClass::getIdsByDelimiter($this->locationpicker, '[', ']');
+                if (!is_numeric($this->locationPicker)) {
+                    $locationId = HelperClass::getIdsByDelimiter($this->locationPicker, '[', ']');
                     $res = HelperClass::getLocationDataById($locationId);
                 } 
                 // Backward compatibility for old picker versions with arrays attached to them END
                 else {
-                    $res = HelperClass::getLocationDataById($this->locationpicker);
+                    $res = HelperClass::getLocationDataById($this->locationPicker);
                 }
                 $arrData = HelperClass::prepareArrayDataForLocationTemplate($res, $this->Template);
                 break;
